@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Ana ekran</title>
+</head>
+<body>
+   <!--navbar-->
+   <nav class="navbar navbar-expand-lg bg-danger navbar-dark">
+        <div class="container">
+            <p class="container" style="font-size: 10px; color: #FFFFFF; font-weight: 550;  margin-top: 15px;"><a href="/" class="navbar-brand"> Bağış Yuvası</a></p>
+        </div>
+        <div href="/home"v style="display: flex; align-items: center;">
+            <svg  width="25" height="25" viewBox="0 0 33 30" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                <path  d="M12.9091 28.1987V19.1924H20.0829V28.1987C20.0829 29.1894 20.89 30 21.8764 30H27.2568C28.2432 30 29.0503 29.1894 29.0503 28.1987V15.5899H32.0992C32.9241 15.5899 33.3187 14.5632 32.691 14.0228L17.6976 0.459321C17.0161 -0.153107 15.9759 -0.153107 15.2944 0.459321L0.301036 14.0228C-0.308741 14.5632 0.067886 15.5899 0.892879 15.5899H3.94177V28.1987C3.94177 29.1894 4.74883 30 5.73523 30H11.1156C12.102 30 12.9091 29.1894 12.9091 28.1987Z"></path>
+            </svg>
+            <p class="container" style="font-size: 10px; color: #FFFFFF; font-weight: 550;  margin-top: 15px;"><a href="/home" class="navbar-brand"> Ana sayfa</a></p>
+        </div>
+        <div class="container">
+            <p class="container" style="font-size: 10px; color: #FFFFFF; font-weight: 550;  margin-top: 15px; "><a href="/error" class="navbar-brand"> Bağış kurumları</a></p>
+        </div>
+        <div class="container">
+            <p class="container" style="font-size: 10px; color: #FFFFFF; font-weight: 550;  margin-top: 15px; margin-right: 750px;"><a href="/error" class="navbar-brand"> İletişim</a></p>
+        </div>
+        <div class="container d-flex justify-content-start">
+            <button type="button" class="btn btn-light position-relative" style="background-color: #ffffff; border: 1px solid #ffffff;">
+                <a href="/profile" class="navbar-brand text-dark">
+                    {% if request.user.is_authenticated %}
+                        {{ request.user.first_name }} <!-- Kullanıcının adını göster -->
+                    {% else %}
+                        Profil <!-- Oturum açılmamışsa sadece "Profil" göster -->
+                    {% endif %}
+                </a>
+                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle">
+                    <span class="visually-hidden">New alerts</span>
+                </span>
+            </button>
+        </div>
+   </nav>
+    
+   <!-- Yorum ekleme formu -->
+   <div class="container mt-5">
+       <h2>Bağış oluştur</h2>
+       <form method="post" action="{% url 'home' %}">
+           {% csrf_token %}
+           <div class="mb-3">
+               <label for="name" class="form-label">Başlık</label>
+               <input type="text" class="form-control" id="name" name="name" required>
+           </div>
+           <div class="mb-3">
+               <label for="comment" class="form-label">Açıklama</label>
+               <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+           </div>
+           <button type="submit" class="btn btn-primary">Gönder</button>
+       </form>
+   </div>
+
+   <!-- Commentler -->
+   <div class="container mt-3">
+    <h2>Aktif bağışlar</h2>
+    {% for comment in comments reversed %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ comment.name }}</h5>
+                <p class="card-text">{{ comment.comment }}</p>
+                <p class="card-text"><small class="text-muted">{{ comment.dateTime }}</small></p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+   <footer class="bg-dark text-light text-center py-3">
+       <div class="container"> 
+           <span class="badge text-bg-primary"> <a href="https:www.facebook.com/" class="navbar-brand">Facebook</a></span>
+           <span class="badge text-bg-info"><a href="https:www.twitter.com/bagısyuvası" class="navbar-brand">Twitter</a></span>
+           <span class="badge text-bg-light">Bilgi ve İletişim</span>
+           <p>&copy; 2024 Bağış Yuvası</p>
+       </div>
+   </footer>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.css"></script>
+</body>
+</html>
