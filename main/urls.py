@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import views as auth_views
+
 
 
 # http:127.0.0.1:8000
@@ -13,13 +13,12 @@ from django.contrib.auth import views as auth_views
 # http:127.0.0.1:8000/home/profile 
 
 urlpatterns = [   
-     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
      path("", views.login),
      path("register",views.register),
      path('register/', views.register, name='register'),
      path('login', views.login, name='login'),
      path("home",views.homes,name='home'),
-     path("profile/<users>",views.profile)
+     path("profile",views.profile,name='profile')
      # path("<int:category_id>",views.getDonationByCategoryId),
      # path("<str:category>",views.getDonationByCategory)
 ]
