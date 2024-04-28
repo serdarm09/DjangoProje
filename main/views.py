@@ -47,7 +47,25 @@ def homes(request):
 
 
 def profile(request):
-    return render(request,"profile.html")
+    if request.method == 'POST':
+        # Formdan gelen hedef kitle değerlerini bir liste olarak al
+        selected_groups = request.POST.getlist('group')
+
+        # Hedef kitle değerlerini istediğimiz formatta düzenle
+        formatted_groups = ', '.join(selected_groups)
+
+        name = request.POST.get('name')
+        comment = request.POST.get('comment')
+            
+        # Yeni yorum oluştururken düzenlenmiş hedef kitle değerlerini kullan
+        new_comment = comments.objects.create(group=formatted_groups, name=name, comment=comment, dateTime=timezone.now())
+        new_comment.save()
+        
+        return redirect('profile')
+
+    all_comments = comments.objects.all()
+    all_groups = group.objects.all()
+    return render(request, "profile.html", {'comments': all_comments, 'groups': all_groups})
 
 def getDonationByCategory(request,category):
     if( category == "profile"):

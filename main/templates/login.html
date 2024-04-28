@@ -57,6 +57,7 @@
 <body style="background-color: rgba(255, 255, 255, 0.1);"> <!-- Arka planı beyaz yap -->
     <div class="login-container">
         <h2>Giriş Ekranı</h2>
+        {% csrf_token %}
         {% if error_message %}
             <p style="color: red;">{{ error_message }}</p> <!-- Hata mesajı göster -->
         {% endif %}

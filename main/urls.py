@@ -18,7 +18,7 @@ urlpatterns = [
      path('register/', views.register, name='register'),
      path('login', views.login, name='login'),
      path("home",views.homes,name='home'),
-     path("profile",views.profile,name='profile')
-     # path("<int:category_id>",views.getDonationByCategoryId),
-     # path("<str:category>",views.getDonationByCategory)
+     path("profile",views.profile,name='profile'),
+     path("<int:category_id>",views.getDonationByCategoryId),
+     path("<str:category>",views.getDonationByCategory)
 ]
