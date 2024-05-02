@@ -13,12 +13,10 @@ from django.contrib.auth.decorators import login_required
 # http:127.0.0.1:8000/home/profile 
 
 urlpatterns = [   
-     path("", views.login),
-     path("register",views.register),
-     path('register/', views.register, name='register'),
-     path('login', views.login, name='login'),
-     path("home",views.homes,name='home'),
-     path("profile",views.profile,name='profile'),
-     path("<int:category_id>",views.getDonationByCategoryId),
-     path("<str:category>",views.getDonationByCategory)
+    path("", views.login_,name="login_1"),
+    path('login', views.login_,name="login_1"),
+    path('register', views.register_, name='register_1'),
+    path("/home",views.home_,name='home_1'),
+    path("profil",views.profil_,name = 'profil_1'),
+    path("settings",views.settings_,name="settings_1"),
 ]
