@@ -1,4 +1,4 @@
-Firs install python https://www.python.org/downloads/
+First install python https://www.python.org/downloads/
 
 pip install django
 
