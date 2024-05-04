@@ -34,12 +34,10 @@ def home(request):
             # Post gönderildikten sonra ana sayfaya yönlendir
             return redirect('home')
         elif not post_title:
-            error_message = "başlık olamdan olmaz reis"
-            return render(request, 'index.html', {'error_message': error_message})
+            return render(request, 'error.html')
         else:
             # Eğer içerik boş ise, hata mesajı göster
-            error_message = "Post içeriği boş olamaz."
-            return render(request, 'index.html', {'error_message': error_message})
+            return render(request, 'error.html')
     else:
         # GET isteği alınırsa, post oluşturma formunu göster
         all_posts = Comment.objects.all()
