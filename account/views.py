@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect ,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Comment
-import random
+
 
 def views_login(request):
     if request.user.is_authenticated:
@@ -21,8 +21,6 @@ def views_login(request):
             return render(request, 'login.html', {'error_message': error_message})
     return render(request, 'login.html')
 
-def company(request):
-    return(request,"error.html")
 
 @login_required
 def home(request):
@@ -56,7 +54,6 @@ def home(request):
         except EmptyPage:
             # Eğer page numarası sayfalama sınırlarının dışındaysa, son sayfayı getir
             posts = paginator.page(paginator.num_pages)
-            
         return render(request, 'index.html',{'users': users, 'posts': posts})
    
     
@@ -116,7 +113,28 @@ def register(request):
     
 @login_required
 def profil(request):
-    return render(request,"my-profile.html")
+    # Kullanıcının oluşturduğu postları filtrele
+    comments = Comment.objects.filter(user__username=request.user)
+    user = User.objects
+    # Şablonla kullanıcı postlarını gönder
+    return render(request, "my-profile.html", {'user_posts': comments,'users_data':user}) 
+
+def user_profile(request, username):
+    # Kullanıcının var olup olmadığını kontrol et
+    user = get_object_or_404(User, username=username)
+    user_posts = Comment.objects.filter(user=user)
+    
+    return render(request, 'user-profile.html', {'profile_user': user, 'user_posts': user_posts})
+
+@login_required
+def message(request):
+    return render(request,'messaging.html')
+
+
+def company(request):
+    return render(request,"error.html")
+
+
 
 def views_logout(request):
     logout(request)

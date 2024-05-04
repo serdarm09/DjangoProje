@@ -131,8 +131,8 @@ Header START -->
 						<a class="nav-link dropdown-toggle" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hesap </a>
 						<ul class="dropdown-menu" aria-labelledby="postMenu">
               <li> <a class="dropdown-item" href="#">Bağış istekleri</a> </li>
-							<li> <a class="dropdown-item" href="settings">Ayarlar</a> </li>
-						  <li> <a class="dropdown-item" href="help-details">Yardım ve İletişim</a> </li>
+							<li> <a class="dropdown-item" href="/settings">Ayarlar</a> </li>
+						  <li> <a class="dropdown-item" href="/help-details">Yardım ve İletişim</a> </li>
               <!-- dropdown submenu open left -->
 						</ul>
 					</li>
@@ -157,7 +157,7 @@ Header START -->
                 </div>
                 <div>
                   <div>	
-                    <a class="h6 stretched-link" href="#">{{user.username}}</a>
+                    <a class="h6 stretched-link" href="#">{{profile_user.username}}</a>
                     <!--<p class="small m-0">Web Developer</p>-->
                   </div>
 
@@ -242,7 +242,7 @@ Header END -->
                       <div class="ms-sm-4 mt-sm-3">
                           <!-- Info -->
                           <div>
-                              <h1 class="mb-0 h5">{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
+                              <h1 class="mb-0 h5">{{ profile_user.username }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
                           </div>
                           <!-- Button -->
                           <div class="d-flex mt-3 justify-content-center ms-sm-auto">
@@ -253,7 +253,7 @@ Header END -->
                       <ul class="list-unstyled mb-0 mt-3 mt-sm-0">
                           <li class="mb-2"><i class="bi bi-geo-alt me-1"></i></li>
                           <li class="mb-2"><i class="bi bi-geo-alt me-1"></i>Kahramanmaraş</li>
-                          <li class="mb-2"><i class="bi bi-calendar2-plus me-1"></i> Kayıt Tarihi: {{user.date_joined}}</li>
+                          <li class="mb-2"><i class="bi bi-calendar2-plus me-1"></i> Kayıt Tarihi: {{profile_user.date_joined}}</li>
                       </ul>
                   </div>
               </div>
@@ -270,19 +270,7 @@ Header END -->
           <!-- My profile END -->
 
           <!-- Share feed START -->
-          <div class="card card-body">
-              <div class="d-flex mb-3">
-                  <!-- Avatar -->
-                  <div class="avatar avatar-xs me-2">
-                      <a href="#"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg'  %}" alt=""> </a>
-                  </div>
-                  <!-- Post input -->
-                  <form class="w-100" action="submit_post" method="post">
-                      {% csrf_token %}
-                      <input class="form-control pe-4 border-0" placeholder="Gönderi girelecek alan" name="post_content" data-bs-toggle="modal" data-bs-target="#modalCreateFeed">
-                  </form>
-              </div>
-          </div>
+
           <!-- Share feed END -->
 
           {% for post in user_posts %}
@@ -297,7 +285,7 @@ Header END -->
                           </div>
                           <!-- Info -->
                           <div>
-                              <h1 class="mb-0 h5">{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
+                              <h1 class="mb-0 h5">{{ profile_user.username }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
                           </div>
                       </div>
                       <!-- Card feed action dropdown START -->
@@ -406,38 +394,6 @@ Header END -->
       <div class="modal-header">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <!-- Modal feed header END -->
-
-      <!-- Modal feed body START -->
-      <div class="modal-body">
-         <!-- Add Feed -->
-         <div class="d-flex mb-3">
-          <!-- Feed box  -->
-          <form class="w-100">
-            <textarea class="form-control pe-4 fs-3 lh-1 border-0" rows="4" placeholder="Gönderi girelecek alan..." autofocus></textarea>
-          </form>
-        </div>
-      </div>
-      <!-- Modal feed body END -->
-      
-      <!-- Modal feed footer -->
-      <div class="modal-footer row justify-content-between">
-        <!-- Select -->
-        <div class="col-lg-3">
-          <select class="form-select js-choice" data-position="top" data-search-enabled="false">
-            <option value="PB">Emekli</option>
-            <option value="PV">Engelli</option>
-            <option value="PV">Öğrenci</option>
-            <option value="PV">Memur</option>
-          </select>
-        </div>
-        <!-- Button -->
-        <div class="col-lg-8 text-sm-end">
-          <button type="button" class="btn btn-success-soft">Gönder</button>
-        </div>
-      </div>
-      <!-- Modal feed footer -->
-
     </div>
   </div>
 </div>

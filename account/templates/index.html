@@ -124,6 +124,14 @@ Header START -->
 					<span></span>
 				</span>
 			</button>
+			<div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
+				<div class="nav-item w-100">
+				  <form class="rounded position-relative">
+					<input class="form-control ps-5 bg-light" type="search" placeholder="Yorum Arama..." aria-label="Search">
+					<button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>
+				  </form>
+				</div>
+			  </div>
 
 			<!-- Main navbar START -->
 			<div class="collapse navbar-collapse" id="navbarCollapse">
@@ -298,7 +306,7 @@ Header END -->
                             <!-- Card END -->
                             <!-- Copyright -->
                             <p class="small text-center mt-1">©2024 <a class="text-reset"
-                                    target="_blank" href="https://www....com/"> Bağış Yuvası </a></p>
+                                    target="_blank" href="https://github.com/serdarm09"> Bağış Yuvası </a></p>
                         </div>
                     </div>
                 </nav>
@@ -339,9 +347,14 @@ Header END -->
                     {% for post in posts %}
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title">{{ post.title }}</h5>
+							<div class="avatar">
+								<a href="/profile/{{ post.user.username }}">
+									<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
+								</a>
+								<h6 class="card-title"><a href="/profile/{{post.user.username}}">{{ post.user.username }}</a></h6>
+							</div>							
+                            <h6 class="card-title">{{ post.title }}</h6>
                             <p class="small mb-0">{{ post.content }}</p>
-                            <p class="small mb-0">Yazar: {{ post.user.username }}</p>
                             <p class="small mb-0">Tarih: {{ post.created_at }}</p>
                         </div>
                     </div>
@@ -360,20 +373,30 @@ Header END -->
                             <div class="card-header pb-0 border-0">
                                 <h5 class="card-title mb-0">Kullanıcılar</h5>
                             </div>
+				
                             <!-- Card header END -->
                             <!-- Card body START -->
                             <div class="card-body">
+								<div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0"style="max-width: 250px;">
+									<div class="nav-item w-100">
+									  <form class="rounded position-relative">
+										<input class="form-control ps-5	 bg-light" type="search" placeholder="Kullanıcı Arama..." aria-label="Search">
+										<button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>
+									  </form>
+									</div>
+								  </div>
+								  <br></br>
                                 <!-- Connection item START -->
                                 {% for user in users %}
                                 <div class="hstack gap-2 mb-3">
                                     <!-- Avatar -->
                                     <div class="avatar">
-                                        <a href="#!"><img class="avatar-img rounded-circle"
+                                        <a href="/profile/{{user.username}}"><img class="avatar-img rounded-circle"
                                                 src="{% static 'assets/images/avatar/0.jpg' %}" alt=""></a>
                                     </div>
                                     <!-- Title -->
                                     <div class="overflow-hidden">
-                                        <a class="h6 mb-0" href="#!">{{user.username}} </a>
+                                        <a class="h6 mb-0" href="/profile/{{user.username}}">{{user.username}} </a>
                                     </div>
                                 </div>
                                 {% endfor %}

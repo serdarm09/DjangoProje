@@ -7,6 +7,7 @@ from . import views
 #/profil
 #/settings
 #/logout
+#user_profile
 
 ##/destek
 ##/iletişim
@@ -20,4 +21,6 @@ urlpatterns = [
     path("profil",views.profil,name = 'profil'),
     path("settings",views.settings,name="settings"),
     path("logout/",views.views_logout,name="logout"),
+    path("message/",views.message,name='message'),
+    path('profile/<str:username>/', views.user_profile, name='user_profile'),
 ]
