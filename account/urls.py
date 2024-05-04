@@ -1,6 +1,17 @@
 from django.urls import path
 from . import views 
 
+#/login
+#/register
+#/home
+#/profil
+#/settings
+#/logout
+
+##/destek
+##/iletişim
+##/profilesettings
+
 urlpatterns = [
     path("", views.views_login,name="login"),
     path('login', views.views_login,name="login"),

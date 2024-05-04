@@ -145,7 +145,7 @@ Header START -->
 			<ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
         <li class="nav-item ms-2 dropdown">
 					<a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-						<img class="avatar-img rounded-2"  src="{% static 'assets/images/avatar/placeholder.jpg' %}" alt="">
+						<img class="avatar-img rounded-2"  src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
 					</a>
           <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
             <!-- Profile info -->
@@ -153,20 +153,14 @@ Header START -->
               <div class="d-flex align-items-center position-relative">
                 <!-- Avatar -->
                 <div class="avatar me-3">
-                  <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/placeholder.jpg' %}" alt="avatar">
+                  <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="avatar">
                 </div>
                 <div>
-                  {% if user.is_authenticated %}
                   <div>	
                     <a class="h6 stretched-link" href="#">{{user.username}}</a>
                     <!--<p class="small m-0">Web Developer</p>-->
                   </div>
-                  {% else %}
-                  <div>	
-                    <a class="h6 stretched-link" href="#">Hoş Geldiniz</a>
-                    <!--<p class="small m-0">Web Developer</p>-->
-                  </div>
-                  {% endif %}
+
                 </div>
               </div>
             </li>
@@ -179,9 +173,7 @@ Header START -->
             <li class="dropdown-divider"></li>
             <li>
               {% if user.is_authenticated %}
-              <a class="dropdown-item bg-danger-soft-hover" href="sign-in-advance.html"><i class="bi bi-power fa-fw me-2"></i>Çıkış Yap</a>
-              {% else %}
-              <a class="dropdown-item bg-danger-soft-hover" href="login"><i class="bi bi-power fa-fw me-2"></i>Giriş yap</a>
+              <a class="dropdown-item bg-danger-soft-hover" href="{% url 'logout' %}" ><i class="bi bi-power fa-fw me-2"></i>Çıkış Yap</a>
               {% endif %}
             </li>
             <li> <hr class="dropdown-divider"></li>
@@ -232,124 +224,111 @@ Header END -->
     <div class="row g-4">
 
       <!-- Main content START -->
+      
       <div class="col-lg-8 vstack gap-4">
-        <!-- My profile START -->
-        <div class="card">
-          <!-- Cover image -->
-          <div class="h-200px rounded-top" style="background-image:url(assets/images/avatar/07.jpg); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-            <!-- Card body START -->
-            <div class="card-body py-0">
-              <div class="d-sm-flex align-items-start text-center text-sm-start">
-                <div>
-                  <!-- Avatar -->
-                  <div class="avatar avatar-xxl mt-n5 mb-3">
-                    <img class="avatar-img rounded-circle border border-white border-3" src="{% static 'assets/images/avatar/placeholder.jpg'  %}" alt="">
+          <!-- My profile START -->
+          <div class="card">
+              <!-- Cover image -->
+              <div class="h-200px rounded-top" style="background-image:url({% static 'assets/images/avatar/backround.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+              <!-- Card body START -->
+              <div class="card-body py-0">
+                  <div class="d-sm-flex align-items-start text-center text-sm-start">
+                      <div>
+                          <!-- Avatar -->
+                          <div class="avatar avatar-xxl mt-n5 mb-3">
+                              <img class="avatar-img rounded-circle border border-white border-3" src="{% static 'assets/images/avatar/0.jpg'  %}" alt="">
+                          </div>
+                      </div>
+                      <div class="ms-sm-4 mt-sm-3">
+                          <!-- Info -->
+                          <div>
+                              <h1 class="mb-0 h5">{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
+                          </div>
+                          <!-- Button -->
+                          <div class="d-flex mt-3 justify-content-center ms-sm-auto">
+                              <button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i>Profilini Düzenle </button>
+                          </div>
+                      </div>
+                      <!-- List profile -->
+                      <ul class="list-unstyled mb-0 mt-3 mt-sm-0">
+                          <li class="mb-2"><i class="bi bi-geo-alt me-1"></i></li>
+                          <li class="mb-2"><i class="bi bi-geo-alt me-1"></i>Kahramanmaraş</li>
+                          <li class="mb-2"><i class="bi bi-calendar2-plus me-1"></i> Kayıt Tarihi: {{user.date_joined}}</li>
+                      </ul>
                   </div>
-                </div>
-                <div class="ms-sm-4 mt-sm-3">
-                  <!-- Info -->
-                {% if user.is_authenticated %}
-								<div>	
-                  <h1 class="mb-0 h5">{{user.username}}<i class="bi bi-patch-check-fill text-success small"></i></h1>
-									<!--<p class="small m-0">Web Developer</p>-->
-								</div>
-								{% else %}
-								<div>	
-                  <h1 class="mb-0 h5">Hoş geldiniz<i class="bi bi-patch-check-fill text-success small"></i></h1>
-									<!--<p class="small m-0">Web Developer</p>-->
-								</div>
-								{% endif %}
-                </div>
-                <!-- Button -->
-                <div class="d-flex mt-3 justify-content-center ms-sm-auto">
-                  <button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1" href="settings"></i>Profilini Düzenle </button>
-                </div>
               </div>
-              <!-- List profile -->
-              <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
-                <li class="list-inline-item"><i class="bi bi-briefcase me-1"></i>Backend Developer & Web Security</li>
-                <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i>Kahramanmaraş</li>
-                <li class="list-inline-item"><i class="bi bi-calendar2-plus me-1"></i> Kayıt tarihi Mayıs 1, 2024</li>
-              </ul>
-            </div>
-            <!-- Card body END -->
-            <div class="card-footer mt-3 pt-2 pb-0">
-              <!-- Nav profile pages -->
-              <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
-                <li class="nav-item"> <a class="nav-link active" href="my-profile.html"> Gönderileri </a> </li>
-                <li class="nav-item"> <a class="nav-link" href="my-profile-about.html"> Hakkımda </a> </li>
-              </ul>
-            </div>
+              <!-- Card body END -->
+              <div class="card-footer mt-3 pt-2 pb-0">
+                  <!-- Nav profile pages -->
+                  <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
+                      <li class="nav-item"> <a class="nav-link active" href="my-profile.html"> Gönderileri </a> </li>
+                      <li class="nav-item"> <a class="nav-link" href="my-profile-about.html"> Hakkımda </a> </li>
+                  </ul>
+              </div>
           </div>
+        {% if user_posts %}
           <!-- My profile END -->
 
           <!-- Share feed START -->
           <div class="card card-body">
-            <div class="d-flex mb-3">
-              <!-- Avatar -->
-              <div class="avatar avatar-xs me-2">
-                <a href="#"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/placeholder.jpg'  %}" alt=""> </a>
+              <div class="d-flex mb-3">
+                  <!-- Avatar -->
+                  <div class="avatar avatar-xs me-2">
+                      <a href="#"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg'  %}" alt=""> </a>
+                  </div>
+                  <!-- Post input -->
+                  <form class="w-100" action="submit_post" method="post">
+                      {% csrf_token %}
+                      <input class="form-control pe-4 border-0" placeholder="Gönderi girelecek alan" name="post_content" data-bs-toggle="modal" data-bs-target="#modalCreateFeed">
+                  </form>
               </div>
-              <!-- Post input -->
-              <form class="w-100">
-                <input class="form-control pe-4 border-0" placeholder="Gönderi girelecek alan" data-bs-toggle="modal" data-bs-target="#modalCreateFeed">
-              </form>
-            </div>
-            <!-- Share feed toolbar START -->
-        
-            <!-- Share feed toolbar END -->
           </div>
           <!-- Share feed END -->
 
-          <!-- Card feed item START -->
+          {% for post in user_posts %}
           <div class="card">
-            <!-- Card header START -->
-            <div class="card-header border-0 pb-0">
-              <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                  <!-- Avatar -->
-                  <div class="avatar avatar-story me-2">
-                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/placeholder.jpg'  %}" alt=""> </a>
+              <!-- Card header START -->
+              <div class="card-header border-0 pb-0">
+                  <div class="d-flex align-items-center justify-content-between">
+                      <div class="d-flex align-items-center">
+                          <!-- Avatar -->
+                          <div class="avatar avatar-story me-2">
+                              <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg'  %}" alt=""> </a>
+                          </div>
+                          <!-- Info -->
+                          <div>
+                              <h1 class="mb-0 h5">{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
+                          </div>
+                      </div>
+                      <!-- Card feed action dropdown START -->
+                      <!-- Card feed action dropdown END -->
                   </div>
-                  <!-- Info -->
-                  {% if user.is_authenticated %}
-                  <div>	
-                    <h1 class="mb-0 h5">{{user.username}}<i class="bi bi-patch-check-fill text-success small"></i></h1>
-                    <!--<p class="small m-0">Web Developer</p>-->
-                  </div>
-                  {% else %}
-                  <div>	
-                    <h1 class="mb-0 h5">Hoş geldiniz<i class="bi bi-patch-check-fill text-success small"></i></h1>
-                    <!--<p class="small m-0">Web Developer</p>-->
-                  </div>
-                  {% endif %}
-                </div>
-                <!-- Card feed action dropdown START -->
-               
-                <!-- Card feed action dropdown END -->
               </div>
-            </div>
-            <!-- Card header END -->
-            <!-- Card body START -->
-            <div class="card-body">
-              <p>Elimde olan bir ürünü bağışlamak istiyorum</p>
-            
-            </div>
-            <!-- Card body END -->
-            <!-- Card footer START -->
-            <div class="card-footer border-0 pt-0">
-              <!-- Load more comments -->
-              <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
-                <div class="spinner-dots me-2">
-                  <span class="spinner-dot"></span>
-                  <span class="spinner-dot"></span>
-                  <span class="spinner-dot"></span>
-                </div>
-              </a>
-            </div>
-            <!-- Card footer END -->
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                  <h1 class="mb-0 h5">{{post.title }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
+                  <p>{{ post.content }}</p>
+              </div>
+              <!-- Card body END -->
+              <!-- Card footer START -->
+              <div class="card-footer border-0 pt-0">
+                  <!-- Load more comments -->
+                  <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
+                      <div class="spinner-dots me-2">
+                          <span class="spinner-dot"></span>
+                          <span class="spinner-dot"></span>
+                          <span class="spinner-dot"></span>
+                      </div>
+                  </a>
+              </div>
+              <!-- Card footer END -->
           </div>
+          {% endfor %}
       </div>
+      {% endif %}
+
+      
       <!-- Main content END -->
 
       <!-- Right sidebar START -->
@@ -392,7 +371,7 @@ Header END -->
                 <div class="d-flex">
                   <!-- Avatar -->
                   <div class="avatar me-3">
-                    <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/08.svg" alt=""> </a>
+                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
                   </div>
                   <!-- Info -->
                   <div>
@@ -410,10 +389,8 @@ Header END -->
 
 
         </div>
-
       </div>
       <!-- Right sidebar END -->
-
     </div> <!-- Row END -->
   </div>
   <!-- Container END -->
@@ -483,7 +460,7 @@ Header END -->
         <div class="d-flex mb-3">
           <!-- Avatar -->
           <div class="avatar avatar-xs me-2">
-            <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/07.jpg'  %}" alt="">
+            <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg'  %}" alt="">
           </div>
           <!-- Feed box  -->
           <form class="w-100">
@@ -525,3 +502,4 @@ JS libraries, plugins and custom scripts -->
 
 <!-- Mirrored from social.webestica.com/my-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 01 May 2024 09:28:18 GMT -->
 </html>
+

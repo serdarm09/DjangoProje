@@ -4,7 +4,7 @@
 
 <!-- Mirrored from social.webestica.com/settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 01 May 2024 09:28:23 GMT -->
 <head>
-	<title>#</title>
+	<title>Ayarlar</title>
 
 	<!-- Meta Tags -->
 	<meta charset="utf-8">
@@ -73,7 +73,7 @@
 	</script>
 
 	<!-- Favicon -->
-	<<link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
+	<link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
 
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -87,9 +87,7 @@
   <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/flatpickr/dist/flatpickr.css' %}">
   
   <!-- Theme CSS -->
-  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
-  >
-    
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">  
 </head>
 
 <body>
@@ -101,12 +99,7 @@ Header START -->
 	<!-- Logo Nav START -->
 	<nav class="navbar navbar-expand-lg">
 		<div class="container">
-			<!-- Logo START -->
-			<a class="navbar-brand" href="home">
-        <img class="light-mode-item navbar-brand-item" src="{% static 'assets/images/logo.ico' %}" alt="logo">
-        <img class="dark-mode-item navbar-brand-item" src="{% static 'assets/images/logo.ico' %}" alt="logo">
-			</a>
-			<!-- Logo END -->
+		
 
 			<!-- Responsive navbar toggler -->
 			<button class="navbar-toggler ms-auto icon-md btn btn-light p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -119,17 +112,14 @@ Header START -->
 
 			<!-- Main navbar START -->
 			<div class="collapse navbar-collapse" id="navbarCollapse">
-
-
-
 				<ul class="navbar-nav navbar-nav-scroll ms-auto">
 					<!-- Nav item 1 Demos -->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="homeMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sayfalar</a>
 						<ul class="dropdown-menu" aria-labelledby="homeMenu">
-							<li> <a class="dropdown-item" href="index-2.html">Anasyfay</a></li>
-							<li> <a class="dropdown-item" href="index-classic.html">Profil</a></li>
-							<li> <a class="dropdown-item" href="index-post.html">Harita</a></li>
+							<li> <a class="dropdown-item" href="home">Anasayfa</a></li>
+							<li> <a class="dropdown-item" href="profil">Profil</a></li>
+							<li> <a class="dropdown-item" href="error">Harita</a></li>
 						</ul>
 					</li>
 					<!-- Nav item 2 Pages -->
@@ -147,7 +137,7 @@ Header START -->
 				</li>
         <li class="nav-item ms-2 dropdown">
 					<a class="nav-link btn icon-md p-0" href="profil" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-            <img class="light-mode-item navbar-brand-item" src="{% static 'assets/images/avatar/placeholder.jpg' %}" alt="logo">
+            <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="logo">
 					</a>
           <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
             <!-- Profile info -->
@@ -155,34 +145,29 @@ Header START -->
               <div class="d-flex align-items-center position-relative">
                 <!-- Avatar -->
                 <div class="avatar me-3">
-                  <img class="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt="avatar">
+                  <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="avatar">
                 </div>
                 <div>
-                  <a class="h6 stretched-link" href="#">Lori Ferguson</a>
-                  <p class="small m-0">Web Developer</p>
+                  <a class="h6 stretched-link" href="#">{{user.username}}</a>
                 </div>
               </div>
-              <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href='profil'>View profile</a>
-            </li>
-            <!-- Links -->
-            <li><a class="dropdown-item" href="settings.html"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
-            <li> 
+              <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href='profil'>Profilini görüntüle</a>
               <a class="dropdown-item" href="#" target="_blank">
-                <i class="fa-fw bi bi-life-preserver me-2"></i>Support
+                <i class="fa-fw bi bi-life-preserver me-2"></i>Destek
               </a> 
             </li>
             <li> 
               <a class="dropdown-item" href="#" target="_blank">
-                <i class="fa-fw bi bi-card-text me-2"></i>Documentation
+                <i class="fa-fw bi bi-card-text me-2"></i>Dokümantasyon
               </a> 
             </li>
             <li class="dropdown-divider"></li>
-            <li><a class="dropdown-item bg-danger-soft-hover" href="sign-in-advance.html"><i class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>
+            <li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'logout' %}"><i class="bi bi-power fa-fw me-2"></i>Çıkış yap</a></li>
             <li> <hr class="dropdown-divider"></li>
             <!-- Dark mode options START -->
 						<li>
 							<div class="modeswitch-item theme-icon-active d-flex justify-content-center gap-3 align-items-center p-2 pb-0">
-								<span>Mode:</span>
+								<span>Sayfa Teması:</span>
 								<button type="button" class="btn btn-modeswitch nav-link text-primary-hover mb-0" data-bs-theme-value="light" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Light">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun fa-fw mode-switch" viewBox="0 0 16 16">
 										<path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
@@ -236,46 +221,6 @@ Header END -->
 					</button>
 				</div>
 				<!-- Advanced filter responsive toggler END -->
-
-        <nav class="navbar navbar-light navbar-expand-lg mx-0">
-          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
-            <!-- Offcanvas header -->
-						<div class="offcanvas-header">
-							<button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-						</div>
-
-            <!-- Offcanvas body -->
-            <div class="offcanvas-body p-0">
-              <!-- Card START -->
-              <div class="card w-100">
-                <!-- Card body START -->
-                <div class="card-body">
-
-                <!-- Side Nav START -->
-                <ul class="nav nav-tabs nav-pills nav-pills-soft flex-column fw-bold gap-2 border-0">
-                  <li class="nav-item" data-bs-dismiss="offcanvas">
-                    <a class="nav-link d-flex mb-0 active" href="#nav-setting-tab-1" data-bs-toggle="tab"><span>Hesap </span></a>
-                  </li>
-                  <li class="nav-item" data-bs-dismiss="offcanvas">
-                    <a class="nav-link d-flex mb-0" href="#nav-setting-tab-5" data-bs-toggle="tab"> <span>Bağışlar </span></a>
-                  </li>
-                  <li class="nav-item" data-bs-dismiss="offcanvas">
-                    <a class="nav-link d-flex mb-0" href="error" data-bs-toggle="tab"><span>Hesap silme işlemleri </span></a>
-                  </li>
-                </ul>
-                <!-- Side Nav END -->
-
-              </div>
-              <!-- Card body END -->
-              <!-- Card footer -->
-              </div>
-            <!-- Card END -->
-            </div>
-            <!-- Copyright -->
-            <p class="small text-center mt-1">©2023 <a class="text-reset" target="_blank" href="#"> Bağış yuvası </a></p>
-          
-          </div>
-        </nav>
       </div>
       <!-- Account settings START -->
 <div class="card mb-4">
@@ -316,7 +261,7 @@ Header END -->
         </div>
         <!-- Button  -->
         <div class="col-12 text-end">
-            <button type="submit" class="btn btn-sm btn-primary mb-0">Değişiklikleri kaydet</button>
+            <button type="submit" class="btn btn-primary-soft">Değişiklikleri kaydet</button>
         </div>
     </form>    
       <!-- Settings END -->
@@ -324,7 +269,7 @@ Header END -->
   <!-- Card body END -->
 </div>
 <!-- Card END -->
-
+        <p class="small text-center mt-1">©2023 <a class="text-reset" target="_blank" href="https://github.com/serdarm09/DjangoProje"> Bağış yuvası </a></p>
         </div>
 
     </div> <!-- Row END -->
