@@ -361,7 +361,7 @@ Header END -->
 									</a>
 								</div>
 									<span class="h6 stretched">
-										<a href="/profile/{{post.user.username}}">{{ post.user.username }} &#x2714;</a>
+										<a href="/profile/{{post.user.username}}">{{ post.user.username }} </a>
 									</span>
 								{% endif %}
 							</div>   
@@ -403,14 +403,24 @@ Header END -->
                                 {% for user in users %}
                                 <div class="hstack gap-2 mb-3">
                                     <!-- Avatar -->
+									{% if user.is_superuser %}
                                     <div class="avatar">
+                                        <a href="#!"><img class="avatar-img rounded-circle"
+                                                src="{% static 'assets/images/avatar/0.jpg' %}" alt=""></a>
+                                    </div>
+                                    <!-- Title -->
+                                    <div class="h6 stretched-link">
+                                        <a class="h6 mb-0" href="#!">{{user.username}} &#x2714;</a>
+                                    </div>
+									{% else %}
+									<div class="avatar">
                                         <a href="/profile/{{user.username}}"><img class="avatar-img rounded-circle"
                                                 src="{% static 'assets/images/avatar/0.jpg' %}" alt=""></a>
                                     </div>
                                     <!-- Title -->
                                     <div class="h6 stretched">
-                                        <a class="h6 mb-0" href="/profile/{{user.username}}">{{user.username}} </a>
-                                    </div>
+                                        <a class="h6 mb-0" href="/profile/{{user.username}}">{{user.username}}	</a>
+									{% endif %}
                                 </div>
                                 {% endfor %}
                                 <!-- Card body END -->
