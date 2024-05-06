@@ -286,7 +286,6 @@ Header END -->
                                             <a href="#!"><img class="avatar-img rounded border border-white border-3"
                                                     src="{% static 'assets/images/avatar/0.jpg' %}" alt=""></a>
                                         </div>
-									
                                         <div>
 										{% if user.is_superuser %}
 											<a class="h6 stretched-link">{{ user.username }} &#x2714;</a>
@@ -330,6 +329,7 @@ Header END -->
                             </div>
                             <textarea class="form-control pe-4 border-0" rows="2" data-autoresize
                                 name="post_content" placeholder="Bağış postu alanı..."></textarea>
+								<br></br>
                             <button type="submit" class="btn btn-primary-soft">Gönder</button>
                         </form>
                     </div>
@@ -343,20 +343,26 @@ Header END -->
                     {% for post in posts %}
                     <div class="card mb-3">
 						<div class="card-body">
-							<div class="avatar">
-								<a href="/profile/{{ post.user.username }}">
-									<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
-								</a>
-							</div>
 							<div>
 								{% if post.user.is_superuser %}
+								<div class="avatar">
+									<a href="/profile/{{ post.user.username }}">
+										<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="">								
+									</a>
+								</div>
 									<span class="h6 stretched-link">
 										<a href="/profile/{{post.user.username}}">{{ post.user.username }} &#x2714;</a>
 									</span>
 								{% else %}
-									<h6 class="card-title">
-										<a href="/profile/{{post.user.username}}">{{ post.user.username }}</a>
-									</h6>
+								<div class="avatar">
+									<a href="/profile/{{ post.user.username }}">
+										<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
+										
+									</a>
+								</div>
+									<span class="h6 stretched">
+										<a href="/profile/{{post.user.username}}">{{ post.user.username }} &#x2714;</a>
+									</span>
 								{% endif %}
 							</div>   
 							<h6 class="card-title">{{ post.title }}</h6>
@@ -402,7 +408,7 @@ Header END -->
                                                 src="{% static 'assets/images/avatar/0.jpg' %}" alt=""></a>
                                     </div>
                                     <!-- Title -->
-                                    <div class="overflow-hidden">
+                                    <div class="h6 stretched">
                                         <a class="h6 mb-0" href="/profile/{{user.username}}">{{user.username}} </a>
                                     </div>
                                 </div>
