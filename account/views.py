@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Comment
-
+from PIL import Image
+from django.core.exceptions import ValidationError
 
 def views_login(request):
     if request.user.is_authenticated:
@@ -22,15 +23,38 @@ def views_login(request):
     return render(request, 'login.html')
 
 
+
+
+def validate_image(image):
+    # Eğer resim yüklenmişse
+    if image:
+        # Resmin geçerliliğini kontrol et
+        try:
+            img = Image.open(image)
+            img.verify()  # Resim dosyasını doğrula
+        except Exception as e:
+            raise ValidationError("Geçersiz resim dosyası: {}".format(e))
+
+
 @login_required
 def home(request):
     users = User.objects.all()
     if request.method == 'POST':
         post_title = request.POST.get('post_title')
         post_content = request.POST.get('post_content')
+        post_image = request.FILES.get("post_image")
+        
         if post_content:  # Eğer içerik dolu ise
+            try:
+                # Resim dosyası kontrolü yap
+                validate_image(post_image)
+                
+            except ValidationError as e:
+                # Resim dosyası değilse, hata mesajı göster
+                raise ValidationError("Geçersiz resim dosyası: {}".format(e))
+            
             # Yeni bir post oluştur ve veritabanına kaydet
-            Comment.objects.create(user=request.user, title=post_title, content=post_content)
+            Comment.objects.create(user=request.user, title=post_title, content=post_content, image=post_image)
             # Post gönderildikten sonra ana sayfaya yönlendir
             return redirect('home')
         elif not post_title:
@@ -53,8 +77,7 @@ def home(request):
             # Eğer page numarası sayfalama sınırlarının dışındaysa, son sayfayı getir
             posts = paginator.page(paginator.num_pages)
         return render(request, 'index.html',{'users': users, 'posts': posts})
-   
-    
+
     
 @login_required
 def settings(request):
@@ -111,9 +134,19 @@ def register(request):
     
 @login_required
 def profil(request):
+    if request.method == 'POST':
+        post_title = request.POST.get('post_title')
+        post_content = request.POST.get('post_content')
+        post_image = request.FILES.get('post_image')
+        if post_content:  # Eğer içerik dolu ise
+            # Yeni bir post oluştur ve veritabanına kaydet
+            Comment.objects.create(user=request.user, title=post_title, content=post_content, image=post_image)
+            # Post gönderildikten sonra ana sayfaya yönlendir
+            return redirect('profil')
     # Kullanıcının oluşturduğu postları filtrele
     comments = Comment.objects.filter(user__username=request.user)
     user = User.objects
+    
     # Şablonla kullanıcı postlarını gönder
     return render(request, "my-profile.html", {'user_posts': comments,'users_data':user}) 
 

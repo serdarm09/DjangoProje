@@ -152,13 +152,12 @@ Header START -->
                 </div>
               </div>
               <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href='profil'>Profilini görüntüle</a>
-              <a class="dropdown-item" href="#" target="_blank">
-                <i class="fa-fw bi bi-life-preserver me-2"></i>Destek
-              </a> 
+
             </li>
+			<li> <hr class="dropdown-divider"></li>
             <li> 
-              <a class="dropdown-item" href="#" target="_blank">
-                <i class="fa-fw bi bi-card-text me-2"></i>Dokümantasyon
+              <a class="dropdown-item" href='profil' target="_blank">
+                <i class="fa-fw bi bi-card-text me-2"></i>Anasayfa
               </a> 
             </li>
             <li class="dropdown-divider"></li>
@@ -249,16 +248,16 @@ Header END -->
             <label class="form-label">Kullanıcı adınız</label>
             <input type="text" class="form-control" name="username" value="{{ user.username }}">
         </div>
-        <!-- Birthday -->
-        <div class="col-lg-6">
-            <label class="form-label">Doğum tarihiniz</label>
-            <input type="text" class="form-control flatpickr" name="birth_date" value="{{ user.birth_date }}">
-        </div>
+
         <!-- Email -->
         <div class="col-sm-6">
             <label class="form-label">Email</label>
             <input type="email" class="form-control" name="email" value="{{ user.email }}">
         </div>
+		<div class="col-sm-6">
+			<label class="form-label">Profil Resmi</label>
+			<input type="file" class="form-control" name="profile_picture" accept="image/*">
+		</div>
         <!-- Button  -->
         <div class="col-12 text-end">
             <button type="submit" class="btn btn-primary-soft">Değişiklikleri kaydet</button>
