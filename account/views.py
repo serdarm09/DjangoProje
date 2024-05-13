@@ -3,9 +3,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import Comment
+from .models import Comment,UserProfile,BagisIstegi
 from PIL import Image
 from django.core.exceptions import ValidationError
+
+
 
 def views_login(request):
     if request.user.is_authenticated:
@@ -25,9 +27,18 @@ def views_login(request):
 
 
 
+@login_required
 def validate_image(image):
     # Eğer resim yüklenmişse
     if image:
+        # Dosya türünü kontrol et
+        if not image.content_type.startswith('image'):
+            raise ValidationError("Geçersiz dosya türü: Sadece resim dosyaları desteklenmektedir.")
+        
+        # Dosya boyutunu kontrol et (örneğin, 5MB)
+        if image.size > 5 * 1024 * 1024:  # 5MB
+            raise ValidationError("Dosya boyutu çok büyük (maksimum 5MB).")
+        
         # Resmin geçerliliğini kontrol et
         try:
             img = Image.open(image)
@@ -35,8 +46,6 @@ def validate_image(image):
         except Exception as e:
             raise ValidationError("Geçersiz resim dosyası: {}".format(e))
 
-
-@login_required
 def home(request):
     users = User.objects.all()
     if request.method == 'POST':
@@ -45,13 +54,6 @@ def home(request):
         post_image = request.FILES.get("post_image")
         
         if post_content:  # Eğer içerik dolu ise
-            try:
-                # Resim dosyası kontrolü yap
-                validate_image(post_image)
-                
-            except ValidationError as e:
-                # Resim dosyası değilse, hata mesajı göster
-                raise ValidationError("Geçersiz resim dosyası: {}".format(e))
             
             # Yeni bir post oluştur ve veritabanına kaydet
             Comment.objects.create(user=request.user, title=post_title, content=post_content, image=post_image)
@@ -65,6 +67,7 @@ def home(request):
     else:
         # GET isteği alınırsa, post oluşturma formunu göster
         all_posts = Comment.objects.all()
+        istekler = BagisIstegi.objects.filter(post__user=request.user)
         # Sayfalama
         paginator = Paginator(all_posts, 10) # Sayfa başına 10 post
         page = request.GET.get('page')
@@ -76,25 +79,67 @@ def home(request):
         except EmptyPage:
             # Eğer page numarası sayfalama sınırlarının dışındaysa, son sayfayı getir
             posts = paginator.page(paginator.num_pages)
-        return render(request, 'index.html',{'users': users, 'posts': posts})
+        return render(request, 'index.html',{'users': users, 'posts': posts ,'istekler': istekler})
 
+
+@login_required
+def bagis_istegi_gonder(request, post_id):
+    if request.method == 'POST':
+        istek_mesaji = request.POST.get('istek_mesaji')
+        post = get_object_or_404(Comment, pk=post_id)
+        
+        #Bağış isteği verilerini kaydet
+        BagisIstegi.objects.create(user=request.user, post=post, istek_mesaji=istek_mesaji)
+        
+        #Kullanıcıya mesaj göster
+        return redirect('home')
+    else:
+        return redirect('home')  # GET isteklerine karşı doğrudan ana sayfaya yönlendiriyoruz
+
+
+@login_required
+def profile_settings(request):
     
+    try:
+        user_profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        user_profile = UserProfile.objects.create(user=request.user)
+        
+    if request.method == 'POST':
+        user_profile.profile_picture = request.FILES.get('profile_picture')
+        user_profile.birth_date = request.POST.get('birth_date')
+        # UserProfile nesnesini kaydet
+        user_profile.save()
+        return redirect('home')
+    else:
+        # GET isteği alınırsa, mevcut kullanıcı bilgilerini içeren bir form göster
+        return render(request, 'settings.html')
+
+
 @login_required
 def settings(request):
+    try:
+        user_profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        user_profile = UserProfile.objects.create(user=request.user)
+
     if request.method == 'POST':
         # Kullanıcı bilgilerini güncelle
         request.user.first_name = request.POST.get('first_name')
         request.user.last_name = request.POST.get('last_name')
         request.user.username = request.POST.get('username')
-        request.user.birth_date = request.POST.get('birth_date')
         request.user.email = request.POST.get('email')
         request.user.save()
-  
+        
+        # Doğum tarihini ve profil resmini güncelle
+
+        # UserProfile nesnesini kaydet
+        user_profile.save()
+
         return redirect('home')  # Varsayılan olarak ana sayfaya yönlendir
     else:
         # GET isteği alınırsa, mevcut kullanıcı bilgilerini içeren bir form göster
         return render(request, 'settings.html')
-
 
 
 def register(request):
@@ -150,12 +195,17 @@ def profil(request):
     # Şablonla kullanıcı postlarını gönder
     return render(request, "my-profile.html", {'user_posts': comments,'users_data':user}) 
 
+@login_required
 def user_profile(request, username):
-    # Kullanıcının var olup olmadığını kontrol et
     user = get_object_or_404(User, username=username)
     user_posts = Comment.objects.filter(user=user)
     
-    return render(request, 'user-profile.html', {'profile_user': user, 'user_posts': user_posts})
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist:
+        user_profile = None
+    
+    return render(request, 'user-profile.html', {'profile_user': user, 'user_posts': user_posts, 'user_profile': user_profile})
 
 @login_required
 def message(request):

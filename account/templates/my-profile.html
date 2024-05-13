@@ -242,7 +242,11 @@ Header END -->
                       <div>
                           <!-- Avatar -->
                           <div class="avatar avatar-xxl mt-n5 mb-3">
-                              <img class="avatar-img rounded-circle border border-white border-3" src="{% static 'assets/images/avatar/0.jpg'  %}" alt="">
+                            {% if user.userprofile.profile_picture%}
+                            <img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+                        {% else %}
+                            <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+                        {% endif %}
                           </div>
                       </div>
                       <div class="ms-sm-4 mt-sm-3">
@@ -283,7 +287,11 @@ Header END -->
               <div class="d-flex mb-3">
                   <!-- Avatar -->
                   <div class="avatar avatar-xs me-2">
-                      <a href="#"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg'  %}" alt=""> </a>
+                    {% if user.userprofile.profile_picture%}
+                    <img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+                {% else %}
+                    <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+                {% endif %}
                   </div>
                   <!-- Post input -->
                   <form class="w-100" action="submit_post" method="post">
@@ -303,7 +311,11 @@ Header END -->
                       <div class="d-flex align-items-center">
                           <!-- Avatar -->
                           <div class="avatar avatar-story me-2">
-                              <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg'  %}" alt=""> </a>
+                            {% if user.userprofile.profile_picture%}
+                            <img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+                        {% else %}
+                            <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+                        {% endif %}
                           </div>
                           <!-- Info -->
                           <div>
@@ -437,10 +449,9 @@ Header END -->
             <!-- Select -->
             <div class="col-lg-3">
                 <select class="form-select js-choice" data-position="top" data-search-enabled="false">
-                    <option value="PB">Emekli</option>
-                    <option value="PV">Engelli</option>
-                    <option value="PV">Öğrenci</option>
-                    <option value="PV">Memur</option>
+                    <option value="PB">Deneme</option>
+                    <option value="PV">denemee</option>
+                    <option value="PV">deneme</option>
                 </select>
             </div>
             <!-- Button -->

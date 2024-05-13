@@ -127,7 +127,7 @@ Header START -->
 			<div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
 				<div class="nav-item w-100">
 				  <form class="rounded position-relative">
-					<input class="form-control ps-5 bg-light" type="search" placeholder="Yorum Arama..." aria-label="Search">
+					<input class="form-control ps-5 bg-light" type="search" placeholder="Bağış Arama..." aria-label="Search">
 					<button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>
 				  </form>
 				</div>
@@ -138,14 +138,12 @@ Header START -->
 
 
 				<ul class="navbar-nav navbar-nav-scroll ms-auto">
+					<a class="nav-link" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Anasayfa </a>
 					<!-- Nav item 1 Demos -->
-				
-					<!-- Nav item 2 Pages -->
-					
-
+					<a class="nav-link" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Onaylı kuruluşlar </a>
 					<!-- Nav item 3 Post -->
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hesap </a>
+						<a class="nav-link dropdown-toggle" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hesap İşlemleri </a>
 						<ul class="dropdown-menu" aria-labelledby="postMenu">
 							<li> <a class="dropdown-item" href="profil">Profil</a> </li>
 							<li> <a class="dropdown-item" href="settings">Ayarlar</a> </li>
@@ -161,6 +159,11 @@ Header START -->
 			<!-- Nav right START -->
 			<ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
 				<li class="nav-item ms-2">
+					<a class="nav-link bg-light icon-md btn btn-light p-0" href="/message">
+						<i class="bi bi-chat-left-text-fill fs-6"> </i>
+					</a>
+				</li>
+				<li class="nav-item ms-2">
 					<a class="nav-link bg-light icon-md btn btn-light p-0" href="settings">
 						<i class="bi bi-gear-fill fs-6"> </i>
 					</a>
@@ -170,7 +173,12 @@ Header START -->
 
 				<li class="nav-item ms-2 dropdown">
 					<a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-						<img class="avatar-img rounded-2" src="{%static 'assets/images/avatar/0.jpg'%}" alt="">
+						{% if user.userprofile.profile_picture%}
+						<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+				{% else %}
+				<a href="#"> <img class="avatar-img rounded-circle"
+						src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+				{% endif %}
 					</a>
 					<ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
 						<!-- Profile info -->
@@ -178,7 +186,12 @@ Header START -->
 							<div class="d-flex align-items-center position-relative">
 								<!-- Avatar -->
 								<div class="avatar me-3">
-									<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="avatar">
+									{% if user.userprofile.profile_picture%}
+									<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+							{% else %}
+							<a href="#"> <img class="avatar-img rounded-circle"
+									src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+							{% endif %}
 								</div>
 								{% if user.is_authenticated %}
 								<div>	
@@ -256,7 +269,7 @@ Header END -->
                 <div class="d-flex align-items-center d-lg-none">
                     <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
-                        <span class="btn btn-primary"><i class="fa-solid fa-sliders-h"></i></span>
+                        <span class="btn btn-primary-soft"><i class="fa-solid fa-sliders-h"></i></span>
                         <span class="h6 mb-0 fw-bold d-lg-none ms-2">My profile</span>
                     </button>
                 </div>
@@ -284,8 +297,12 @@ Header END -->
                                     <div class="text-center">
                                         <!-- Avatar -->
                                         <div class="avatar avatar-lg mt-n5 mb-3">
-                                            <a href="#!"><img class="avatar-img rounded border border-white border-3"
-                                                    src="{% static 'assets/images/avatar/0.jpg' %}" alt=""></a>
+											{% if user.userprofile.profile_picture%}
+											<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+									{% else %}
+									<a href="#"> <img class="avatar-img rounded-circle"
+											src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+									{% endif %}
                                         </div>
                                         <div>
 										{% if user.is_superuser %}
@@ -318,8 +335,12 @@ Header END -->
 					<div class="d-flex mb-3">
 						<!-- Avatar -->
 						<div class="avatar avatar-xs me-2">
+							{% if user.userprofile.profile_picture%}
+									<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+							{% else %}
 							<a href="#"> <img class="avatar-img rounded-circle"
 									src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+							{% endif %}
 						</div>
 						<!-- Post input -->
 						<form class="w-100" method="post" enctype="multipart/form-data">
@@ -347,42 +368,74 @@ Header END -->
 				
 				<div class="post-list">
 					{% for post in posts %}
-					<div class="card mb-3">
-						<div class="card-body">
-							<div class="d-flex align-items-center">
-								<!-- Avatar -->
-								<div class="avatar me-1">
-									<a href="/profile/{{ post.user.username }}">
-										<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
-									</a>
-								</div>
-								<!-- Kullanıcı adı -->
-								<div>
-									{% if post.user.is_superuser %}
-									<span class="h6 stretched-link">
-										<a href="/profile/{{post.user.username}}">{{ post.user.username }} &#x2714;</a>
-									</span>
-									{% else %}
-									<span class="h6 stretched">
-										<a href="/profile/{{post.user.username}}">{{ post.user.username }} </a>
-									</span>
-									{% endif %}
-								</div>
-							</div>
-							<div style="margin-bottom: 20px;"></div>
-							<!-- Başlık -->
-							<h6 class="card-title">{{ post.title }}</h6>
-							<!-- İçerik -->
-							<p class="small mb-0">{{ post.content }}</p>
-							<!-- Tarih -->
-							<p class="small mb-0">Tarih: {{ post.created_at }}</p>
-							<!-- Resim -->
-							{% if post.image %}
-							<img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-3">
-							{% endif %}
-						</div>
-					</div>
-					{% endfor %}
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <!-- Avatar -->
+            <div class="avatar me-1">
+                {% if post.user.userprofile.profile_picture %}
+                <img class="avatar-img rounded-circle" src="{{ post.user.userprofile.profile_picture.url }}" alt="">
+                {% else %}
+                <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
+                {% endif %}
+            </div>
+            <!-- Kullanıcı adı -->
+            <div>
+                {% if post.user.is_superuser %}
+                <span class="h6 stretched-link">
+                    <a href="/profile/{{post.user.username}}">{{ post.user.username }} &#x2714;</a>
+                </span>
+                {% else %}
+                <span class="h6 stretched">
+                    <a href="/profile/{{post.user.username}}">{{ post.user.username }} </a>
+                </span>
+                {% endif %}
+            </div>
+        </div>
+        <div style="margin-bottom: 20px;"></div>
+        <!-- Başlık -->
+        <h6 class="card-title">{{ post.title }}</h6>
+        <!-- İçerik -->
+        <p class="small mb-0">{{ post.content }}</p>
+        <!-- Tarih -->
+        <p class="small mb-0">Tarih: {{ post.created_at }}</p>
+        <!-- Resim -->
+        {% if post.image %}
+        <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-3">
+        {% endif %}
+		<br></br>
+        <!-- İstek At Butonu -->
+        <button type="button" class="btn btn-primary-soft" data-bs-toggle="modal" data-bs-target="#istekModal{{ post.id }}">
+            Bağış İsteği At
+        </button>
+    </div>
+</div>
+
+<!-- İstek Modalı -->
+<div class="modal fade" id="istekModal{{ post.id }}" tabindex="-1" aria-labelledby="istekModal{{ post.id }}Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="istekModal{{ post.id }}Label">Bağış İsteği Gönder</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- İstek Formu -->
+                <form method="post" action="{% url 'bagis_istegi_gonder' post.id %}">
+                    {% csrf_token %}
+                    <!-- İstek Alanı -->
+                    <div class="mb-3">
+                        <label for="istekMesaji" class="form-label">İstek Mesajı</label>
+                        <textarea class="form-control" id="istekMesaji" name="istek_mesaji" rows="3"></textarea>
+                    </div>
+                    <!-- İstek Gönder Butonu -->
+                    <button type="submit" class="btn btn-primary">Gönder</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 				</div>
 				
 
@@ -426,13 +479,16 @@ Header END -->
                                     </div>
 									{% else %}
 									<div class="avatar">
-                                        <a href="/profile/{{user.username}}"><img class="avatar-img rounded-circle"
-                                                src="{% static 'assets/images/avatar/0.jpg' %}" alt=""></a>
+										{% if user.userprofile.profile_picture%}
+										<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+										{% else %}
+										<a href="#"> <img class="avatar-img rounded-circle"
+											src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+										{% endif %}
                                     </div>
                                     <!-- Title -->
                                     <div class="h6 stretched">
                                         <a class="h6 mb-0" href="/profile/{{user.username}}">{{user.username}}	</a>
-									
                                 	</div>
 									{% endif %}
                                
@@ -487,31 +543,29 @@ Header END -->
 		<!-- Offcanvas body START -->
 		<div class="offcanvas-body pt-0 custom-scrollbar">
 			<ul class="list-unstyled">
-
-				
-
 				<!-- Contact item -->
+				{% for istek in istekler %}
 				<li class="mt-3 hstack gap-3 align-items-center position-relative">
 					<!-- Avatar -->
 					<div class="avatar status-online">
-						<img class="avatar-img rounded-circle"  src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
+						<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Bekir Sıtkı </a>
-						<div class="small text-secondary text-truncate">Deneme</div>
+						<a class="h6 mb-0 stretched-link" href="#!">{{ istek.user.username }}</a>
+						<div class="small text-secondary text-truncate">{{ istek.istek_mesaji }}</div>
 					</div>
 					<!-- Chat time -->
-					<div class="small ms-auto text-nowrap"> 20, Mayıs </div>
+					<div class="small ms-auto text-nowrap">{{ istek.created_at }}</div>
 				</li>
+				{% endfor %}
 				<!-- Button -->
 				<li class="mt-3 d-grid">
-					<a class="btn btn-primary-soft" href="message"> Bütün istekleri Gör</a>
+					<a class="btn btn-primary-soft" href="{% url 'message' %}">Bütün istekleri Gör</a>
 				</li>
-
 			</ul>
-			
 		</div>
+		
 		
 		<!-- Offcanvas body END -->
 	</div>

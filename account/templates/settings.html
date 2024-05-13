@@ -137,7 +137,11 @@ Header START -->
 				</li>
         <li class="nav-item ms-2 dropdown">
 					<a class="nav-link btn icon-md p-0" href="profil" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-            <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="logo">
+						{% if user.userprofile.profile_picture%}
+						<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+				{% else %}
+						<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+				{% endif %}
 					</a>
           <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
             <!-- Profile info -->
@@ -145,7 +149,11 @@ Header START -->
               <div class="d-flex align-items-center position-relative">
                 <!-- Avatar -->
                 <div class="avatar me-3">
-                  <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="avatar">
+					{% if user.userprofile.profile_picture%}
+					<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+			{% else %}
+					<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+			{% endif %}
                 </div>
                 <div>
                   <a class="h6 stretched-link" href="#">{{user.username}}</a>
@@ -231,42 +239,72 @@ Header END -->
   <!-- Card body START -->
   <div class="card-body">
       <!-- Form settings START -->
-      <form class="row g-3" method="POST" action="{% url 'settings' %}">
-        {% csrf_token %}
-        <!-- First name -->
-        <div class="col-sm-6 col-lg-4">
-            <label class="form-label">Adınız</label>
-            <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}">
-        </div>
-        <!-- Last name -->
-        <div class="col-sm-6 col-lg-4">
-            <label class="form-label">Soy adınız</label>
-            <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}">
-        </div>
-        <!-- User name -->
-        <div class="col-sm-6">
-            <label class="form-label">Kullanıcı adınız</label>
-            <input type="text" class="form-control" name="username" value="{{ user.username }}">
-        </div>
-
-        <!-- Email -->
-        <div class="col-sm-6">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" name="email" value="{{ user.email }}">
-        </div>
-		<div class="col-sm-6">
-			<label class="form-label">Profil Resmi</label>
-			<input type="file" class="form-control" name="profile_picture" accept="image/*">
+	  <form class="row g-3" method="POST" action="{% url 'settings' %}" enctype="multipart/form-data">
+		{% csrf_token %}
+		<!-- First name -->
+		<div class="col-sm-6 col-lg-4">
+			<label class="form-label">Adınız</label>
+			<input type="text" class="form-control" name="first_name" value="{{ user.first_name }}">
 		</div>
-        <!-- Button  -->
-        <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary-soft">Değişiklikleri kaydet</button>
-        </div>
-    </form>    
+		<!-- Last name -->
+		<div class="col-sm-6 col-lg-4">
+			<label class="form-label">Soy adınız</label>
+			<input type="text" class="form-control" name="last_name" value="{{ user.last_name }}">
+		</div>
+		<!-- User name -->
+		<div class="col-sm-6">
+			<label class="form-label">Kullanıcı adınız</label>
+			<input type="text" class="form-control" name="username" value="{{ user.username }}">
+		</div>
+		<!-- Email -->
+		<div class="col-sm-6">
+			<label class="form-label">Email</label>
+			<input type="email" class="form-control" name="email" value="{{ user.email }}">
+		</div>
+		<!-- Button  -->
+		<div class="col-12 text-end">
+			<button type="submit" class="btn btn-primary-soft">Değişiklikleri kaydet</button>
+		</div>
+	</form>
+	
       <!-- Settings END -->
   </div>
   <!-- Card body END -->
 </div>
+
+<div class="card mb-4">
+	<!-- Title START -->
+	<div class="card-header border-0 pb-0">
+		<h1 class="h5 card-title">Profil ayarları</h1>
+	</div>
+	<!-- Card header START -->
+	<!-- Card body START -->
+	<div class="card-body">
+		<!-- Form settings START -->
+		<form class="row g-3" method="POST" action="{% url 'profile_settings' %}" enctype="multipart/form-data">
+		  {% csrf_token %}
+		  <!-- First name -->
+		  
+		  <!-- Birth date -->
+		  <div class="col-lg-6">
+			  <label class="form-label">Doğum tarihiniz</label>
+			  <input type="date" class="form-control" name="birth_date" value="{{ user.userprofile.birth_date }}">
+		  </div>
+		  <!-- Profile picture -->
+		  <div class="col-lg-6">
+			  <label class="form-label">Profil Resmi</label>
+			  <input type="file" class="form-control" name="profile_picture">
+		  </div>
+		  <!-- Button  -->
+		  <div class="col-12 text-end">
+			  <button type="submit" class="btn btn-primary-soft">Profilini kaydet</button>
+		  </div>
+	  </form>
+	  
+		<!-- Settings END -->
+	</div>
+	<!-- Card body END -->
+  </div>
 <!-- Card END -->
         <p class="small text-center mt-1">©2023 <a class="text-reset" target="_blank" href="https://github.com/serdarm09/DjangoProje"> Bağış yuvası </a></p>
         </div>
