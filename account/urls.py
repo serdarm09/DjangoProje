@@ -8,7 +8,6 @@ from . import views
 #/settings
 #/logout
 #user_profile
-
 ##/destek
 ##/iletişim
 ##/profilesettings
@@ -24,6 +23,8 @@ urlpatterns = [
     path("logout/",views.views_logout,name="logout"),
     path("message/",views.message,name='message'),
     path('profile/<str:username>/', views.user_profile, name='user_profile'),
-    path('bagis_istegi_gonder/<int:post_id>/', views.bagis_istegi_gonder, name='bagis_istegi_gonder'),
-   
+    path('bagis_istegi_gonder/<int:post_id>/', views.bagis_istegi_gonder, name='bagis_istegi_gonder'),   
+    path('post-action/<int:post_id>/', views.post_action, name='post_action'),
+    path('donations', views.donations, name='donations'),  
+    path('company', views.company, name='company'),  
 ]

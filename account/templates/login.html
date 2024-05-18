@@ -103,10 +103,8 @@
           <h1 class="mb-2">Giriş</h1>
           <p class="mb-0">Hesabınızı yok mu?<a href="{%url 'register'%}"> Hesap oluştur</a></p>
 		  	{% if messages %}
-		  	{% for message in messages %}
-				  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-		  	{% endfor %}
-	  	{% endif %}
+				  <div class="alert">{{ messages }}</div>
+	  		{% endif %}
 
           <!-- Form START -->
 		  <form method="post">

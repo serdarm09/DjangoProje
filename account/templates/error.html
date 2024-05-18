@@ -309,9 +309,15 @@ Header END -->
         </figure>
         <!-- SVG END -->
         <!-- 404 info -->
+        {% if message %}
         <h1 class="display-1 mt-4">HATA</h1>
         <h2 class="mb-2 h1">AÇIKLAMA SATIRI BOŞ!</h2>
         <p>Açıklma satırınız boş lütfen tekrar düzenleyip deneyin.</p>
+        {% else %}
+        <h1 class="display-1 mt-4">HATA</h1>
+        <h2 class="mb-2 h1">AÇIKLAMA SATIRI BOŞ!</h2>
+        <p><div class="alert alert-{{ message.tags }}">{{ message }}</div></p>
+        {% endif %}
         <!-- Button -->
         <a class="btn btn-primary-soft btn-sm" href="{%url 'home'%}">Ana sayfaya dön</a>
       </div>

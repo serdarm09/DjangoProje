@@ -20,8 +20,8 @@ def views_login(request):
             login(request, user)
             return redirect('home')
         else:
-            error_message = "Hatalı e-posta veya şifre"
-            return render(request, 'login.html', {'error_message': error_message})
+            messages = "Hatalı e-posta veya şifre"
+            return render(request, 'login.html', {'messages': messages})
     return render(request, 'login.html')
 
 
@@ -34,18 +34,13 @@ def validate_image(image):
         # Dosya türünü kontrol et
         if not image.content_type.startswith('image'):
             raise ValidationError("Geçersiz dosya türü: Sadece resim dosyaları desteklenmektedir.")
-        
-        # Dosya boyutunu kontrol et (örneğin, 5MB)
-        if image.size > 5 * 1024 * 1024:  # 5MB
-            raise ValidationError("Dosya boyutu çok büyük (maksimum 5MB).")
-        
         # Resmin geçerliliğini kontrol et
         try:
             img = Image.open(image)
             img.verify()  # Resim dosyasını doğrula
         except Exception as e:
             raise ValidationError("Geçersiz resim dosyası: {}".format(e))
-
+@login_required
 def home(request):
     users = User.objects.all()
     if request.method == 'POST':
@@ -53,44 +48,50 @@ def home(request):
         post_content = request.POST.get('post_content')
         post_image = request.FILES.get("post_image")
         
-        if post_content:  # Eğer içerik dolu ise
-            
-            # Yeni bir post oluştur ve veritabanına kaydet
+        if post_content:
             Comment.objects.create(user=request.user, title=post_title, content=post_content, image=post_image)
-            # Post gönderildikten sonra ana sayfaya yönlendir
             return redirect('home')
-        elif not post_title:
-            return render(request, 'error.html')
         else:
-            # Eğer içerik boş ise, hata mesajı göster
             return render(request, 'error.html')
-    else:
-        # GET isteği alınırsa, post oluşturma formunu göster
-        all_posts = Comment.objects.all()
-        istekler = BagisIstegi.objects.filter(post__user=request.user)
-        # Sayfalama
-        paginator = Paginator(all_posts, 10) # Sayfa başına 10 post
-        page = request.GET.get('page')
-        try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            # Eğer page sayısı bir integer değilse, ilk sayfayı getir
-            posts = paginator.page(1)
-        except EmptyPage:
-            # Eğer page numarası sayfalama sınırlarının dışındaysa, son sayfayı getir
-            posts = paginator.page(paginator.num_pages)
-        return render(request, 'index.html',{'users': users, 'posts': posts ,'istekler': istekler})
+
+    all_posts = Comment.objects.filter(comment_isactive=True)
+    istekler = BagisIstegi.objects.filter(post__user=request.user)
+    paginator = Paginator(all_posts, 10)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'index.html', {'users': users, 'posts': posts, 'istekler': istekler})
+
+@login_required
+def post_action(request, post_id):
+    post = get_object_or_404(Comment, id=post_id)
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'delete':
+            post.comment_isactive = False
+            post.save()
+        elif action == 'success':
+            post.comment_succes = True
+            post.save()
+    return redirect('home')
 
 
 @login_required
 def bagis_istegi_gonder(request, post_id):
     if request.method == 'POST':
         istek_mesaji = request.POST.get('istek_mesaji')
+        country = request.POST.get('country')
+        city = request.POST.get('city')
+        district = request.POST.get('district')
         post = get_object_or_404(Comment, pk=post_id)
         
-        #Bağış isteği verilerini kaydet
-        BagisIstegi.objects.create(user=request.user, post=post, istek_mesaji=istek_mesaji)
         
+        #Bağış isteği verilerini kaydet
+        BagisIstegi.objects.create(user=request.user, post=post, istek_mesaji=istek_mesaji, country=country, city=city, district=district)
         #Kullanıcıya mesaj göster
         return redirect('home')
     else:
@@ -108,9 +109,13 @@ def profile_settings(request):
     if request.method == 'POST':
         user_profile.profile_picture = request.FILES.get('profile_picture')
         user_profile.birth_date = request.POST.get('birth_date')
-        # UserProfile nesnesini kaydet
-        user_profile.save()
-        return redirect('home')
+        if(user_profile.birth_date):
+            # UserProfile nesnesini kaydet
+            user_profile.save()
+            return redirect('home')
+        else:
+            error_message = "Parolalar eşleşmiyor"
+            return render(request,"error.html",  {'error_message': error_message})
     else:
         # GET isteği alınırsa, mevcut kullanıcı bilgilerini içeren bir form göster
         return render(request, 'settings.html')
@@ -208,13 +213,16 @@ def user_profile(request, username):
     return render(request, 'user-profile.html', {'profile_user': user, 'user_posts': user_posts, 'user_profile': user_profile})
 
 @login_required
+def donations(request):
+    return render(request,'donations.html')
+
+@login_required
 def message(request):
     return render(request,'messaging.html')
 
 
 def company(request):
-    return render(request,"error.html")
-
+    return render(request,"Company.html")
 
 
 def views_logout(request):
