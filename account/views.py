@@ -76,6 +76,22 @@ def settings(request):
     else:
         # GET isteği alınırsa, mevcut kullanıcı bilgilerini içeren bir form göster
         return render(request, 'settings.html')
+    
+
+@login_required
+def messages(request):
+    if request.method == 'POST':
+        # Kullanıcı bilgilerini güncelle
+        request.user.first_name = request.POST.get('first_name')
+        request.user.last_name = request.POST.get('last_name')
+        request.user.username = request.POST.get('username')
+        request.user.birth_date = request.POST.get('birth_date')
+        request.user.email = request.POST.get('email')
+        request.user.save()
+  
+        return redirect('home')  # Varsayılan olarak ana sayfaya yönlendir
+    
+    return render(request, 'settings.html')
 
 
 

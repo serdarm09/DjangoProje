@@ -19,3 +19,7 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-created_at']  # Yorumları oluşturulma tarihine göre sırala
+
+
+
+

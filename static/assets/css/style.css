@@ -8018,6 +8018,7 @@ textarea.form-control-lg {
   position: absolute !important;
 }
 
+/*
 .stretched-link::after {
   position: absolute;
   top: 0;
@@ -8027,6 +8028,7 @@ textarea.form-control-lg {
   z-index: 1;
   content: "";
 }
+*/
 
 .text-truncate {
   overflow: hidden;

@@ -415,34 +415,86 @@ Header END -->
 		</div>
 		<!-- Offcanvas body START -->
 		<div class="offcanvas-body pt-0 custom-scrollbar">
-			<ul class="list-unstyled">
+			<ul class="list-unstyled" id="conversations">
 
 				
 
 				<!-- Contact item -->
 				<li class="mt-3 hstack gap-3 align-items-center position-relative">
 					<!-- Avatar -->
-					<div class="avatar status-online">
-						<img class="avatar-img rounded-circle"  src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
-					</div>
-					<!-- Info -->
-					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Bekir Sıtkı </a>
-						<div class="small text-secondary text-truncate">Deneme</div>
-					</div>
-					<!-- Chat time -->
-					<div class="small ms-auto text-nowrap"> 20, Mayıs </div>
+					<a>
+
+						<div class="avatar status-online">
+							<img class="avatar-img rounded-circle"  src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
+						</div>
+						<!-- Info -->
+						<div class="overflow-hidden">
+							<a class="h6 mb-0 stretched-link" href="#!">Bekir Sıtkı </a>
+							<div class="small text-secondary text-truncate">Deneme</div>
+						</div>
+						<!-- Chat time -->
+						<div class="small ms-auto text-nowrap"> 20, Mayıs </div>
+					</a>
 				</li>
 				<!-- Button -->
-				<li class="mt-3 d-grid">
-					<a class="btn btn-primary-soft" href="messaging.html"> Bütün istekleri Gör</a>
-				</li>
+				<!--
+
+					<li class="mt-3 d-grid">
+						<a class="btn btn-primary-soft" href="messaging.html"> Bütün istekleri Gör</a>
+					</li>
+				-->
 
 			</ul>
 		</div>
 		<!-- Offcanvas body END -->
 	</div>
 	<!-- Chat sidebar END -->
+	
+	<!-- Chat single START -->
+	<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasSingleChat">
+		<!-- Offcanvas header -->
+		<div class="m-3 hstack gap-3 align-items-center position-relative">
+			<div class="avatar status-online">
+				<img class="avatar-img rounded-circle"  src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
+			</div>
+			<!-- Info -->
+			<div class="overflow-hidden">
+				<a class="h6 mb-0 stretched-link" href="#!" id="conversation-title"></a>
+			</div>
+			<!-- Chat time -->
+			<div class="small ms-auto text-nowrap" id="conversation-last-seen"></div>
+			<div class="d-flex">
+				<!-- Close  -->
+				<a href="#" class="btn btn-secondary-soft-hover py-1 px-2" data-bs-dismiss="offcanvas" aria-label="Close" id="closeOffcanvasSingleChat">
+					<i class="fa-solid fa-xmark"></i>
+				</a>
+
+			</div>
+		</div><hr class="mx-3 mt-0">
+		<!-- Offcanvas body START -->
+		<div class="offcanvas-body pt-0 custom-scrollbar" id="offcanvasSingleChatScroll">
+			<ul class="list-unstyled" id="messages" style="padding-bottom: 2rem;">
+			</ul>
+			<!-- Chat bottom START -->
+			<div class="mt-2" style="
+					position: fixed;
+					bottom: 0;
+					width: 350px;
+					background-color: white;
+				">
+				<!-- Chat textarea -->
+				<!-- Button -->
+				<div class="d-sm-flex align-items-end mt-2">
+					<button class="btn btn-sm btn-secondary-soft me-2"><i class="fa-solid fa-paperclip fs-6"></i></button>
+					<textarea class="form-control mb-sm-0 mb-3 me-2" placeholder="Type a message" rows="1" id="send-message-input"></textarea>
+					<button class="btn btn-sm btn-primary ms-auto" id="send-message-button" disabled> Send </button>
+				</div>
+			</div>
+			<!-- Chat bottom END -->
+		</div>
+		<!-- Offcanvas body END -->
+	</div>
+	<!-- Chat single END -->
 
 	<!-- Chat END -->
 
@@ -592,7 +644,7 @@ Header END -->
 							<button class="btn btn-sm btn-primary ms-auto"> Send </button>
 						</div>
 					</div>
-					<!-- Chat bottom START -->
+					<!-- Chat bottom END -->
 				</div>
 			</div>
 			<!-- Chat toast END -->
@@ -1041,8 +1093,274 @@ JS libraries, plugins and custom scripts -->
 <!-- Theme Functions -->
 <script src="{% static 'assets/js/functions.js' %}"></script>
 
+<script>
+	const conversationsElement = document.getElementById("conversations");
+	const singleMessageWrapper = document.getElementById("offcanvasSingleChat");
+	const singleMessageScroll = document.getElementById("offcanvasSingleChatScroll");
+	const closeOffcanvasSingleChat = document.getElementById("closeOffcanvasSingleChat");
+	const messagesElement = document.getElementById("messages");
+
+	const sendMessageInput = document.getElementById("send-message-input");
+	const sendMessageButton = document.getElementById("send-message-button");
+	
+	closeOffcanvasSingleChat.onclick = () => {
+		singleMessageWrapper.classList.remove("show");
+		clearInterval(currentConversationIntervalId);
+		currentConversationIntervalId = null;  // not necessary
+	}
+
+	sendMessageButton.onclick = handle_send_message;
+
+	var oldConversations = null;
+	var oldMessages = null;
+	
+	get_conversations();
+	setInterval(() => {
+		get_conversations();
+	}, 1000);
+
+	function get_conversations() {
+		
+		fetch(
+			"{% url 'messaging:get_all_conversations' %}"
+		).then(r => {
+			if(!r.ok){
+				throw new Error("response was not ok")
+			}
+			return r.json();
+		}).then(data => {
+			if(JSON.stringify(oldConversations) !== JSON.stringify(data)){
+				place_conversations(data.conversations);
+				oldConversations = data;
+			}
+		}).catch(e => {
+			console.error(e);
+		});
+	}
+
+
+	var currentConversationIntervalId = null;
+	function place_conversations(conversations) {
+		conversationsElement.innerHTML = "";
+		conversations.forEach(conversation => {
+			let li = document.createElement("li");
+			li.className = "mt-3 hstack gap-3 align-items-center position-relative";
+			
+			li.onclick = () => {
+				singleMessageWrapper.classList.add("show");
+				get_messages(conversation.user_id);
+				console.log(conversation.user_id);
+				currentConversationIntervalId = setInterval(() => {
+					get_messages(conversation.user_id);
+				}, 1000);
+			}
+			li.innerHTML = 
+			`
+				<div class="avatar status-online">
+					<img class="avatar-img rounded-circle"  src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
+				</div>
+				<!-- Info -->
+				<div class="overflow-hidden">
+					<a class="h6 mb-0 stretched-link" href="#!">${conversation.username}</a>
+					<div class="small text-secondary text-truncate">${conversation.message}</div>
+				</div>
+				<!-- Chat time -->
+				<div class="small ms-auto text-nowrap"> ${formatDate(conversation.date)} </div>
+			`
+			conversationsElement.appendChild(li);
+		});
+	}
+	
+	
+	var currentConversation = null;
+	function get_messages(user_id) {
+		currentConversation = user_id;
+		const formData = new FormData();
+		formData.append("user_id", user_id);
+		fetch("{% url 'messaging:get_messages' %}",
+			{
+				method: "POST",
+				body: formData
+			}
+		).then(r => {
+			if(!r.ok){
+				return r.json().then(errorData => {
+					throw new Error(errorData.error);
+				});
+			}
+			return r.json();
+		}).then(data => {
+			if(JSON.stringify(oldMessages) !== JSON.stringify(data)){
+				place_messages(data.messages, data.other_user);
+				oldMessages = data;
+			}
+			
+		}).catch(e => {
+			console.error(e);
+		});
+	}
+	
+	
+	function place_messages(messages, other_user) {
+		document.getElementById("conversation-title").innerHTML = other_user.username;
+		document.getElementById("conversation-last-seen").innerHTML = `last seen on ${formatDate(other_user.last_login)}`;
+		messagesElement.innerHTML = "";
+		var previousDate = null;
+		messages.forEach(message => {
+			if(previousDate !== new Date(message.date).getDate()){
+				let date = document.createElement("div");
+				date.className = "text-center small my-2";
+				date.innerHTML = formatDate(message.date);
+				messagesElement.append(date);
+				previousDate = new Date(message.date).getDate();
+			}
+			let li = document.createElement("li");
+			li.className = "chat-conversation-content custom-scrollbar";
+			console.log(`${message.message} is ${message.is_read ? "read" : "not read"}`);
+			console.log(message.is_read);
+			li.onclick = () => {
+				singleMessageWrapper.classList.add("show");
+			}
+			li.innerHTML = message.is_sent ? (`
+				<!-- Chat message right -->
+				<div class="d-flex justify-content-end text-end mb-1">
+					<div class="w-100">
+						<div class="d-flex flex-column align-items-end">
+							<div class="bg-primary text-white p-2 px-3 rounded-2">${message.message}</div>
+							<!-- Images -->
+							<div class="d-flex my-2">
+								<div class="small text-secondary">${formatTime(message.date)}</div>
+								<div class="small ms-2"><i class="fa-solid fa-check${message.is_read ? "-double" : ""}"></i></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			`) : (`
+				<!-- Chat message left -->
+				<div class="d-flex mb-1">
+					<div class="flex-shrink-0 avatar avatar-xs me-2">
+						<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="${other_user}">
+					</div>
+					<div class="flex-grow-1">
+						<div class="w-100">
+							<div class="d-flex flex-column align-items-start">
+								<div class="bg-light text-secondary p-2 px-3 rounded-2">${message.message}</div>
+								<div class="small my-2">${formatTime(message.date)}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+			`)
+
+			
+			messagesElement.appendChild(li);
+		});
+		singleMessageScroll.firstChild.scrollTo({
+        top: singleMessageScroll.scrollHeight,
+        behavior: 'smooth'
+    });
+		
+	}
+
+
+	sendMessageInput.oninput = e => {
+		sendMessageButton.disabled = !sendMessageInput.value;
+	}
+
+
+	function handle_send_message(){
+		if(!sendMessageInput.value){return}
+		send_message(sendMessageInput.value);
+		sendMessageInput.value = "";
+		sendMessageButton.disabled = true;
+	}
+
+	function send_message(message) {
+		const formData = new FormData();
+		formData.append("user_id", currentConversation);
+		formData.append("message", message);
+		fetch("{% url 'messaging:send_message' %}",
+			{
+				method: "POST",
+				body: formData
+			}
+		).then(r => {
+			if(!r.ok){
+				return r.json().then(errorData => {
+					throw new Error(errorData.error);
+				});
+			}
+			return r.json();
+		}).then(data => {
+			
+		}).catch(e => {
+			console.error(e);
+		});
+	}
+
+
+	function formatDate(dateString) {
+		const date = new Date(dateString) 
+		const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+							"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+		let hours = date.getHours();
+		let minutes = date.getMinutes();
+
+		minutes = minutes < 10 ? '0' + minutes : minutes;
+
+		let am_pm = hours > 12 ? "PM" : "AM";
+
+		let month = monthNames[date.getMonth()];
+		let day = date.getDate();
+
+		return `${month} ${day} at ${hours}:${minutes} ${am_pm}`;
+		// return `${hours}:${minutes} at ${month} ${day}`;
+	}
+
+	function formatDateForMessage(dateString) {
+		const date = new Date(dateString) 
+		const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+							"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+		let hours = date.getHours();
+		let minutes = date.getMinutes();
+
+		minutes = minutes < 10 ? '0' + minutes : minutes;
+
+		let month = monthNames[date.getMonth()];
+		let day = date.getDate();
+
+		return `${month} ${day} at ${hours}:${minutes}`;
+		// return `${hours}:${minutes} at ${month} ${day}`;
+	}
+
+	function formatTime(dateString) {
+		const date = new Date(dateString) 
+
+		let hours = date.getHours();
+		let minutes = date.getMinutes();
+
+		let am_pm = hours > 12 ? "PM" : "AM";
+
+		minutes = minutes < 10 ? '0' + minutes : minutes;
+
+
+		return `${hours}:${minutes} ${am_pm}`;
+
+		// return `${hours}:${minutes} at ${month} ${day}`;
+	}
+
+
+
+
+
+
+</script>
 
 </body>
 
 <!-- Mirrored from social.webestica.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 01 May 2024 09:27:58 GMT -->
 </html>
+
