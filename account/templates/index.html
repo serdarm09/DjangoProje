@@ -139,14 +139,14 @@ Header START -->
 				<ul class="navbar-nav navbar-nav-scroll ms-auto">
 					<a class="nav-link" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Anasayfa </a>
 					<!-- Nav item 1 Demos -->
-					<a class="nav-link" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Onaylı kuruluşlar </a>
+					<a class="nav-link" href="/company" id="postMenu">Onaylı kuruluşlar </a>
 					<!-- Nav item 3 Post -->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hesap İşlemleri </a>
 						<ul class="dropdown-menu" aria-labelledby="postMenu">
 							<li> <a class="dropdown-item" href="profil">Profil</a> </li>
 							<li> <a class="dropdown-item" href="settings">Ayarlar</a> </li>
-							<li> <a class="dropdown-item" href="privacy-and-terms.html">İletişim ve destek</a> </li>
+							<li> <a class="dropdown-item" href="#">İletişim ve destek</a> </li>
 						</ul>
 					</li>
 
@@ -167,7 +167,6 @@ Header START -->
 						<i class="bi bi-gear-fill fs-6"> </i>
 					</a>
 				</li>
-				
 				<!-- Notification dropdown END -->
 
 				<li class="nav-item ms-2 dropdown">
@@ -195,11 +194,7 @@ Header START -->
 									<a class="h6 stretched-link" href="#">{{user.username}}</a>
 									<!--<p class="small m-0">Web Developer</p>-->
 								</div>
-								{% else %}
-								<div>	
-									<a class="h6 stretched-link" href="#">Hoş Geldiniz</a>
-									<!--<p class="small m-0">Web Developer</p>-->
-								</div>
+								
 								{% endif %}
 							</div>
 							<a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="profil">Profilini görüntüle</a>
@@ -254,7 +249,6 @@ Header START -->
 <!-- =======================
 Header END -->
 
-<!-- **************** MAIN CONTENT START **************** -->
 <main>
     <!-- Container START -->
     <div class="container">
@@ -294,12 +288,12 @@ Header END -->
                                     <div class="text-center">
                                         <!-- Avatar -->
                                         <div class="avatar avatar-lg mt-n5 mb-3">
-											{% if user.userprofile.profile_picture%}
+										{% if user.userprofile.profile_picture%}
 											<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
-									{% else %}
-									<a href="#"> <img class="avatar-img rounded-circle"
+										{% else %}
+										<a href="#"> <img class="avatar-img rounded-circle"
 											src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
-									{% endif %}
+										{% endif %}
                                         </div>
                                         <div>
 										{% if user.is_superuser %}
@@ -345,9 +339,11 @@ Header END -->
 							<div class="mb-3">
 								<input type="text" class="form-control pe-4 border-0" name="post_title" placeholder="Başlık">
 							</div>
+								<input type="text" class="form-control pe-4 border-0" name="post_country" placeholder="İl bilgisi giriniz...">
+								<input type="text" class="form-control pe-4 border-0" name="post_city" placeholder="İlçe bilgisi giriniz...">
+								<input type="text" class="form-control pe-4 border-0" name="post_district" placeholder="Mahalle bilgisi giriniz...">
 							<div class="mb-3">
-								<textarea class="form-control pe-4 border-0" rows="2" data-autoresize name="post_content"
-									placeholder="Bağış postu alanı..."></textarea>
+								<textarea class="form-control pe-4 border-0" rows="2" data-autoresize name="post_content" placeholder="Bağış postu açıklama alanı..."></textarea>
 							</div>
 							<!-- Resim yükleme alanı -->
 							<div class="mb-3">
@@ -396,6 +392,9 @@ Header END -->
 							<p class="small mb-0">{{ post.content }}</p>
 							<!-- Tarih -->
 							<p class="small mb-0">Tarih: {{ post.created_at }}</p>
+							<p class="small mb-0">Şehir: {{ post.country }}</p>
+							<p class="small mb-0">İlçe {{ post.city }}</p>
+							<p class="small mb-0">Mahaller: {{ post.district }}</p>
 							<!-- Resim -->
 							{% if post.image %}
 							<img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-3">
@@ -449,7 +448,7 @@ Header END -->
 								</div>
 							</div>
 						</div>
-						{% endfor %}
+					 {% endfor %}
 					</div>
 				</div>
             <!-- Main content END -->

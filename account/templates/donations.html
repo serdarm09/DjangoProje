@@ -203,12 +203,13 @@ Header START -->
                   <img class="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt="avatar">
                 </div>
                 <div>
-                  <a class="h6 stretched-link" href="#">Lori Ferguson</a>
+                  <a class="h6 stretched-link" href="#">Username.</a>
                   <p class="small m-0">Web Developer</p>
                 </div>
               </div>
               <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="/profil">Profilini görüntüle</a>
             </li>
+            
             <!-- Links -->
             <li><a class="dropdown-item" href="/settings"><i class="bi bi-gear fa-fw me-2"></i>Ayarlar</a></li>
             <li> 
@@ -266,186 +267,167 @@ Header END -->
     <div class="row g-4">
 
       <!-- Main content START -->
+      
       <div class="col-lg-8 vstack gap-4">
-        <!-- Card START -->
-        <div class="card">
-          <div class="h-200px rounded-top" style="background-image:url(assets/images/bg/05.jpg); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-            <!-- Card body START -->
-            <div class="card-body py-0">
-              <div class="d-sm-flex align-items-start text-center text-sm-start">
-                <div>
-                  <!-- Avatar -->
-                  <div class="avatar avatar-xxl mt-n5 mb-3">
-                    <img class="avatar-img rounded-circle border border-white border-3" src="assets/images/avatar/07.jpg" alt="">
+          <!-- My profile START -->
+          <div class="card">
+              <!-- Cover image -->
+              <div class="h-200px rounded-top" style="background-image:url({% static 'assets/images/avatar/backround.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+              <!-- Card body START -->
+              <div class="card-body py-0">
+                  <div class="d-sm-flex align-items-start text-center text-sm-start">
+                      <div>
+                          <!-- Avatar -->
+                          <div class="avatar avatar-xxl mt-n5 mb-3">
+                            {% if user.userprofile.profile_picture%}
+                            <img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+                          {% else %}
+                            <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+                          {% endif %}
+                          </div>
+                      </div>
+                      <div class="ms-sm-4 mt-sm-3">
+                          <!-- Info -->
+                          <div>
+                              <h1 class="mb-0 h5">{{ user.username }}</h1>
+                          </div>
+                          <!-- Button -->
+                          <div class="d-flex mt-3 justify-content-center ms-sm-auto">
+                            <a href='settings' class="btn btn-danger-soft me-2"> 
+                                <i class="bi bi-pencil-fill pe-1"></i> Profilini Düzenle 
+                            </a>
+                        </div>
+                        
+                      </div>
+                      <!-- List profile -->
+                      <ul class="list-unstyled mb-0 mt-3 mt-sm-0">
+                          <li class="mb-2"></li>
+                          <li class="mb-2"><i class="bi bi-geo-alt me-1"></i>Kahramanmaraş</li>
+                          <li class="mb-2"><i class="bi bi-calendar2-plus me-1"></i> Kayıt Tarihi: {{user.date_joined}}</li>
+                      </ul>
                   </div>
-                </div>
-             
-                <!-- Button -->
-                <div class="d-flex mt-3 justify-content-center ms-sm-auto">
-                  <button class="btn btn-danger-soft me-2" href="/settings" type="button"> <i class="bi bi-pencil-fill pe-1"></i> Profilini düzenle </button>
-                  <div class="dropdown">
-                    <!-- Card share action menu -->
-                    <button class="icon-md btn btn-light" type="button" id="profileAction2" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-three-dots"></i>
-                    </button>
-                    <!-- Card share action dropdown menu -->
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileAction2">
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-file-earmark-pdf fa-fw pe-2"></i>Save your profile to PDF</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                    </ul>
-                  </div>
-                </div>
               </div>
-              <!-- List profile -->
-              <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
-                <li class="list-inline-item"><i class="bi bi-calendar2-plus me-1"></i> Kayıt Tarihi on Nov 26, 2019</li>
-              </ul>
-            </div>
-            <!-- Card body END -->
-            <div class="card-footer mt-3 pt-2 pb-0">
-              <!-- Nav profile pages -->
-              <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
-                <li class="nav-item"> <a class="nav-link" href="/profil"> Gönderilerim </a> </li>
-                <li class="nav-item"> <a class="nav-link active" href="my-profile-about.html"> Başarılı bağışlarım </a> </li>
+              <!-- Card body END -->
+              <div class="card-footer mt-3 pt-2 pb-0">
+                  <!-- Nav profile pages -->
+                  <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
+                      <li class="nav-item"> <a class="nav-link" href="/profil"> Gönderileri </a> </li>
+                      <li class="nav-item"> <a class="nav-link active" href='/donations'> Başarılı Bağışlarım </a> </li>
+                  </ul>
+              </div>
+          </div>
+          <!-- My profile END -->
+          <!-- Share feed START -->
+         
+          <!-- Share feed END -->
+        {% if user_posts %}
+          {% csrf_token %}
+          {% for post in user_posts %}
+          <div class="card">
+              <!-- Card header START -->
+              <div class="card-header border-0 pb-0">
+                  <div class="d-flex align-items-center justify-content-between">
+                      <div class="d-flex align-items-center">
+                          <!-- Avatar -->
+                          <div class="avatar avatar-story me-2">
+                            {% if user.userprofile.profile_picture%}
+                            <img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+                          {% else %}
+                            <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+                          {% endif %}
+                          </div>
+                          <!-- Info -->
+                          <div>
+                              <h1 class="mb-0 h5">{{ user.username }}</h1>
+                          </div>
+                      </div>
+                      <!-- Card feed action dropdown START -->
+                      <!-- Card feed action dropdown END -->
+                  </div>
+              </div>
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                  <h1 class="mb-0 h5">{{post.title }}</h1>
+                  <p>{{ post.content }}</p>
+                  {% if post.image %}
+							<img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-3">
+							{% endif %}
+              </div>
+              <!-- Card body END -->
+              <!-- Card footer START -->
+              <div class="card-footer border-0 pt-0">
+                  <!-- Load more comments -->
+                  <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true"></a>
+              </div>
+              <!-- Card footer END -->
+          </div>
+          {% endfor %}
+      </div>
+      {% endif %}
 
-              </ul>
+      
+      <!-- Main content END -->
+
+      <!-- Right sidebar START -->
+      <div class="col-lg-4">
+
+        <div class="row g-4">
+
+          <!-- Card START -->
+          <div class="col-md-6 col-lg-12">
+            <div class="card">
+              <div class="card-header border-0 pb-0">
+                <h5 class="card-title">Hakkımda</h5>
+                <!-- Button modal -->
+              </div>
+              <!-- Card body START -->
+              <div class="card-body position-relative pt-0">
+                <p>Merhabalar ben serdar Bilgisayar mühendiliği 3 sınıfım</p>
+                <!-- Date time -->
+                <ul class="list-unstyled mt-3 mb-0">
+                  <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i>  </li>
+                </ul>
+              </div>
+              <!-- Card body END -->
             </div>
           </div>
           <!-- Card END -->
 
-        </div>
-        <!-- Main content END -->
-
-        <!-- Right sidebar START -->
-        <div class="col-lg-4">
-
-          <div class="row g-4">
-
-            <!-- Card START -->
-            <div class="col-sm-6 col-lg-12">
-              <div class="card">
-                <div class="card-header border-0 pb-0">
-                  <h5 class="card-title">About</h5>
-                  <!-- Button modal -->
-                </div>
-                <!-- Card body START -->
-                <div class="card-body position-relative pt-0">
-                  <p>deneme.</p>
-                  <!-- Date time -->
-                  <ul class="list-unstyled mt-3 mb-0">
-                    <li> <i class="bi bi-envelope fa-fw pe-1"></i> Email: <strong> deneme@gmail.com </strong> </li>
-                  </ul>
-                </div>
-                <!-- Card body END -->
+          <!-- Card START -->
+          <div class="col-md-6 col-lg-12">
+            <div class="card">
+              <!-- Card header START -->
+              <div class="card-header d-flex justify-content-between border-0">
+                <h5 class="card-title">Önerilen onaylı kullanıcılar</h5>
+                <a class="btn btn-primary-soft btn-sm" href="#!"> <i class="fa-solid fa-plus"></i> </a>
               </div>
-            </div>
-            <!-- Card END -->
-
-
-            <!-- Card START -->
-            <div class="col-sm-6 col-lg-12">
-              <div class="card">
-                <!-- Card header START -->
-                <div class="card-header d-sm-flex justify-content-between align-items-center border-0">
-                  <h5 class="card-title">Bağış yaptığım kişiler</h5>
-                
-                </div>
-                <!-- Card header END -->
-                <!-- Card body START -->
-                <div class="card-body position-relative pt-0">
-                  <div class="row g-3">
-
-                    <div class="col-6">
-                      <!-- Friends item START -->
-                      <div class="card shadow-none text-center h-100">
-                        <!-- Card body -->
-                        <div class="card-body p-2 pb-0">
-                          <div class="avatar avatar-story avatar-xl">
-                            <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/02.jpg" alt=""></a>
-                          </div>
-                          <h6 class="card-title mb-1 mt-3"> <a href="#!"> Deneme </a></h6>
-                        </div>
-                        <!-- Card footer -->
-                        <div class="card-footer p-2 border-0">
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Send message"> <i class="bi bi-chat-left-text"></i> </button>
-                        
-                        </div>
-                      </div>
-                      <!-- Friends item END -->
-                    </div>
-
-                    <div class="col-6">
-                      <!-- Friends item START -->
-                      <div class="card shadow-none text-center h-100">
-                        <!-- Card body -->
-                        <div class="card-body p-2 pb-0">
-                          <div class="avatar avatar-xl">
-                            <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt=""></a>
-                          </div>
-                          <h6 class="card-title mb-1 mt-3"> <a href="#!"> Deneme </a></h6>
-                          
-                        </div>
-                        <!-- Card footer -->
-                        <div class="card-footer p-2 border-0">
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Send message"> <i class="bi bi-chat-left-text"></i> </button>
-                          
-                        </div>
-                      </div>
-                      <!-- Friends item END -->
-                    </div>
-
-                    <div class="col-6">
-                      <!-- Friends item START -->
-                      <div class="card shadow-none text-center h-100">
-                        <!-- Card body -->
-                        <div class="card-body p-2 pb-0">
-                          <div class="avatar avatar-xl">
-                            <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/04.jpg" alt=""></a>
-                          </div>
-                          <h6 class="card-title mb-1 mt-3"> <a href="#">  Deneme </a></h6>
-                         
-                        </div>
-                        <!-- Card footer -->
-                        <div class="card-footer p-2 border-0">
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Send message"> <i class="bi bi-chat-left-text"></i> </button>
-                          
-                        </div>
-                      </div>
-                      <!-- Friends item END -->
-                    </div>
-
-                    <div class="col-6">
-                      <!-- Friends item START -->
-                      <div class="card shadow-none text-center h-100">
-                        <!-- Card body -->
-                        <div class="card-body p-2 pb-0">
-                          <div class="avatar avatar-xl">
-                            <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt=""></a>
-                          </div>
-                          <h6 class="card-title mb-1 mt-3"> <a href="#!">  Deneme </a></h6>
-           
-                        </div>
-                        <!-- Card footer -->
-                        <div class="card-footer p-2 border-0">
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Send message"> <i class="bi bi-chat-left-text"></i> </button>
-                          
-                        </div>
-                      </div>
-                      <!-- Friends item END -->
-                    </div>
-
+              <!-- Card header END -->
+              <div class="card-body position-relative pt-0">
+                <!-- Experience item START -->
+                <div class="d-flex">
+                  <!-- Avatar -->
+                  <div class="avatar me-3">
+                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+                  </div>
+                  <!-- Info -->
+                  <div>
+                    <h6 class="card-title mb-0"><a href="#!"> userName </a></h6>
                   </div>
                 </div>
-                <!-- Card body END -->
+                <!-- Experience item END -->
               </div>
+              <!-- Card body END -->
             </div>
-            <!-- Card END -->
+          </div>
+          <!-- Card END -->
+          
+        
+
 
         </div>
-
       </div>
       <!-- Right sidebar END -->
-
     </div> <!-- Row END -->
   </div>
   <!-- Container END -->

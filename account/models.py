@@ -6,13 +6,13 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Yorumu yapan kullanıcı
     title = models.CharField(max_length=100)  # Yorum başlığı
     content = models.TextField()  # Yorum içeriği
-    image = models.ImageField(upload_to="profile_images", null=True, blank=True, default='')
+    image = models.ImageField(upload_to="profile_images", null=True, blank=True)  # Resim alanı
     created_at = models.DateTimeField(auto_now_add=True)  # Yorumun oluşturulma tarihi
-    comment_isactive =  models.BooleanField(default=True)
-    comment_succes = models.BooleanField(default=False)
-    #country = models.CharField(max_length=100)
-    #city = models.CharField(max_length=100)
-    #district = models.CharField(max_length=100)
+    comment_isactive = models.BooleanField(default=True)  # Yorumun aktif olup olmadığını belirten alan
+    comment_succes = models.BooleanField(default=False)  # Yorumun başarılı olup olmadığını belirten alan
+    country = models.CharField(max_length=100)  # Ülke bilgisi
+    city = models.CharField(max_length=100)  # Şehir bilgisi
+    district = models.CharField(max_length=100, blank=True, null=True)  # İlçe bilgisi, boş ve null olabilir
 
     class Meta:
         ordering = ['-created_at']  # Yorumları oluşturulma tarihine göre sırala

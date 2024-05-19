@@ -40,6 +40,7 @@ def validate_image(image):
             img.verify()  # Resim dosyasını doğrula
         except Exception as e:
             raise ValidationError("Geçersiz resim dosyası: {}".format(e))
+
 @login_required
 def home(request):
     users = User.objects.all()
@@ -47,17 +48,21 @@ def home(request):
         post_title = request.POST.get('post_title')
         post_content = request.POST.get('post_content')
         post_image = request.FILES.get("post_image")
+        post_country = request.POST.get("post_country")
+        post_city = request.POST.get('post_city')
+        post_district = request.POST.get('post_district')
         
         if post_content:
-            Comment.objects.create(user=request.user, title=post_title, content=post_content, image=post_image)
+            Comment.objects.create(user=request.user, title=post_title, content=post_content, image=post_image, country = post_country ,city=post_city, district=post_district)
             return redirect('home')
         else:
             return render(request, 'error.html')
 
-    all_posts = Comment.objects.filter(comment_isactive=True)
+    all_posts = Comment.objects.filter(comment_isactive=True,comment_succes=False)
     istekler = BagisIstegi.objects.filter(post__user=request.user)
     paginator = Paginator(all_posts, 10)
     page = request.GET.get('page')
+    
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
@@ -98,6 +103,7 @@ def bagis_istegi_gonder(request, post_id):
         return redirect('home')  # GET isteklerine karşı doğrudan ana sayfaya yönlendiriyoruz
 
 
+
 @login_required
 def profile_settings(request):
     
@@ -119,6 +125,7 @@ def profile_settings(request):
     else:
         # GET isteği alınırsa, mevcut kullanıcı bilgilerini içeren bir form göster
         return render(request, 'settings.html')
+
 
 
 @login_required
@@ -194,7 +201,7 @@ def profil(request):
             # Post gönderildikten sonra ana sayfaya yönlendir
             return redirect('profil')
     # Kullanıcının oluşturduğu postları filtrele
-    comments = Comment.objects.filter(user__username=request.user)
+    comments = Comment.objects.filter(user__username=request.user, comment_isactive=True)
     user = User.objects
     
     # Şablonla kullanıcı postlarını gönder
@@ -203,7 +210,7 @@ def profil(request):
 @login_required
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
-    user_posts = Comment.objects.filter(user=user)
+    user_posts = Comment.objects.filter(user=user,comment_succes=False, comment_isactive=True)
     
     try:
         user_profile = UserProfile.objects.get(user=user)
@@ -214,7 +221,12 @@ def user_profile(request, username):
 
 @login_required
 def donations(request):
-    return render(request,'donations.html')
+    # Yalnızca başarılı olan kullanıcı postlarını filtrele
+    comments = Comment.objects.filter(user__username=request.user.username, comment_succes=True, comment_isactive=True)
+    user = User.objects.all()
+    
+    # Şablonla kullanıcı postlarını gönder  
+    return render(request, 'donations.html', {'user_posts': comments, 'users_data': user})
 
 @login_required
 def message(request):

@@ -130,12 +130,17 @@ Header START -->
 
 			<!-- Nav right START -->
 			<ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
-        <li class="nav-item ms-2">
-					<a class="nav-link bg-light icon-md btn btn-light p-0" href="settings">
-						<i class="bi bi-gear-fill fs-6"> </i>
+				<li class="nav-item ms-2">
+					<a class="nav-link bg-light icon-md btn btn-light p-0" href="/message">
+						<i class="bi bi-chat-left-text-fill fs-6"> </i>
 					</a>
 				</li>
-        <li class="nav-item ms-2 dropdown">
+       				<li class="nav-item ms-2">
+						<a class="nav-link bg-light icon-md btn btn-light p-0" href="settings">
+							<i class="bi bi-gear-fill fs-6"> </i>
+						</a>
+					</li>
+        		<li class="nav-item ms-2 dropdown">
 					<a class="nav-link btn icon-md p-0" href="profil" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
 						{% if user.userprofile.profile_picture%}
 						<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
@@ -197,7 +202,7 @@ Header START -->
 							</div>
 						</li> 
 						<!-- Dark mode options END-->
-          </ul>
+          		</ul>
 				</li>
 			  <!-- Profile START -->
         

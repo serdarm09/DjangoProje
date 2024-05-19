@@ -350,35 +350,65 @@ Header END -->
           <hr>
 
           <!-- Side Nav START -->
+          {% load static %}
+
           <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
             <li class="nav-item">
-              <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/home-outline-filled.svg" alt=""><span>Feed </span></a>
+              <a class="nav-link" href="#!">
+                <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/home-outline-filled.svg' %}" alt="">
+                <span>Feed </span>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/medal-outline-filled.svg" alt=""><span>Popular </span></a>
+              <a class="nav-link" href="#!">
+                <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/medal-outline-filled.svg' %}" alt="">
+                <span>Popular </span>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/clock-outline-filled.svg" alt=""><span>Recent </span></a>
+              <a class="nav-link" href="#!">
+                <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/clock-outline-filled.svg' %}" alt="">
+                <span>Recent </span>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/like-outline-filled.svg" alt=""><span>Subscriptions </span></a>
+              <a class="nav-link" href="#!">
+                <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/like-outline-filled.svg' %}" alt="">
+                <span>Subscriptions </span>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/star-outline-filled.svg" alt=""><span>My favorites </span></a>
+              <a class="nav-link" href="#!">
+                <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/star-outline-filled.svg' %}" alt="">
+                <span>My favorites </span>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/task-done-outline-filled.svg" alt=""><span>Wishlist </span></a>
+              <a class="nav-link" href="#!">
+                <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/task-done-outline-filled.svg' %}" alt="">
+                <span>Wishlist </span>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/notification-outlined-filled.svg" alt=""><span>Notifications </span></a>
+              <a class="nav-link" href="#!">
+                <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/notification-outlined-filled.svg' %}" alt="">
+                <span>Notifications </span>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/cog-outline-filled.svg" alt=""><span>Settings </span></a>
+              <a class="nav-link" href="#!">
+                <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/cog-outline-filled.svg' %}" alt="">
+                <span>Settings </span>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/arrow-boxed-outline-filled.svg" alt=""><span>Logout </span></a>
+              <a class="nav-link" href="#!">
+                <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/arrow-boxed-outline-filled.svg' %}" alt="">
+                <span>Logout </span>
+              </a>
             </li>
           </ul>
+            
           <!-- Side Nav END -->
         </div>
       </div>

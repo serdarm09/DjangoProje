@@ -299,8 +299,10 @@ Header END -->
           </div>
           <!-- Share feed END -->
         {% if user_posts %}
+        
           {% csrf_token %}
           {% for post in user_posts %}
+
           <div class="card">
               <!-- Card header START -->
               <div class="card-header border-0 pb-0">
@@ -308,7 +310,7 @@ Header END -->
                       <div class="d-flex align-items-center">
                           <!-- Avatar -->
                           <div class="avatar avatar-story me-2">
-                            {% if user.userprofile.profile_picture%}
+                        {% if user.userprofile.profile_picture%}
                             <img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
                         {% else %}
                             <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
@@ -328,28 +330,31 @@ Header END -->
               <div class="card-body">
                   <h1 class="mb-0 h5">{{post.title }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
                   <p>{{ post.content }}</p>
-                  {% if post.image %}
-							<img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-3">
-							{% endif %}
+                {% if post.image %}
+							  <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-3">
+							  {% endif %}
               </div>
               <!-- Card body END -->
               <!-- Card footer START -->
-              <div class="card-footer border-0 pt-0">
-                  <!-- Load more comments -->
-                  <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
-                      <div class="spinner-dots me-2">
-                          <span class="spinner-dot"></span>
-                          <span class="spinner-dot"></span>
-                          <span class="spinner-dot"></span>
-                      </div>
-                  </a>
-              </div>
+              
+              <form method="post" action="{% url 'post_action' post.id %}">
+								{% csrf_token %}
+								<input type="hidden" name="action" value="delete">
+								<button type="submit" class="btn btn-primary">Bağışı kaldır</button>
+							</form>
+							<form method="post" action="{% url 'post_action' post.id %}">
+								{% csrf_token %}
+								<input type="hidden" name="action" value="success">
+								<button type="submit" class="btn btn-primary">Bağış Başarılı</button>
+							</form>
+            
               <!-- Card footer END -->
-          </div>
+          </div> 
+
           {% endfor %}
       </div>
       {% endif %}
-
+     
       
       <!-- Main content END -->
 
@@ -444,7 +449,7 @@ Header END -->
         </div>
         <div class="modal-footer row justify-content-between">
             <!-- Select -->
-            <div class="col-lg-3">
+            <!--<div class="col-lg-3">
                 <select class="form-select js-choice" data-position="top" data-search-enabled="false">
                     <option value="PB">Deneme</option>
                     <option value="PV">denemee</option>
