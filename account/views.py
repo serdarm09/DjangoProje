@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import Comment,UserProfile,BagisIstegi
+from .models import Comment,UserProfile,BagisIstegi,Biografi
 from PIL import Image
 from django.core.exceptions import ValidationError
 from geopy.geocoders import Nominatim
@@ -58,11 +58,19 @@ def home(request):
             return redirect('home')
         else:
             return render(request, 'error.html')
-
+    
+    user_biografi = Biografi.objects.filter(user=request.user).first()
     all_posts = Comment.objects.filter(comment_isactive=True,comment_succes=False)
     istekler = BagisIstegi.objects.filter(post__user=request.user)
     paginator = Paginator(all_posts, 10)
+    
     page = request.GET.get('page')
+    query = request.GET.get('q')
+    
+    if query:
+        users = User.objects.filter(username__icontains=query)
+    else:
+        users = User.objects.all()
     
     try:
         posts = paginator.page(page)
@@ -70,7 +78,10 @@ def home(request):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    return render(request, 'index.html', {'users': users, 'posts': posts, 'istekler': istekler})
+    return render(request, 'index.html', {'users': users, 'posts': posts, 'istekler': istekler, 'user_biografi': user_biografi})
+
+
+
 
 @login_required
 def post_action(request, post_id):
@@ -154,6 +165,22 @@ def settings(request):
         # GET isteği alınırsa, mevcut kullanıcı bilgilerini içeren bir form göster
         return render(request, 'settings.html')
 
+def biografi(request):
+    try:
+        biografi = Biografi.objects.get(user=request.user)
+    except Biografi.DoesNotExist:
+        biografi = None
+    
+    if request.method == 'POST':
+        bio_content = request.POST.get('bio')
+        if biografi:
+            biografi.bio = bio_content
+        else:
+            biografi = Biografi(user=request.user, bio=bio_content)
+        biografi.save()
+        return redirect('biografi')
+    
+    return render(request, 'settings.html', {'biografi': biografi})
 
 def register(request):
     if request.method == 'POST':
@@ -202,11 +229,12 @@ def profil(request):
             # Post gönderildikten sonra ana sayfaya yönlendir
             return redirect('profil')
     # Kullanıcının oluşturduğu postları filtrele
+    user_biografi = Biografi.objects.filter(user=request.user).first()
     comments = Comment.objects.filter(user__username=request.user, comment_isactive=True)
     user = User.objects
     
     # Şablonla kullanıcı postlarını gönder
-    return render(request, "my-profile.html", {'user_posts': comments,'users_data':user}) 
+    return render(request, "my-profile.html", {'user_posts': comments,'users_data':user ,"user_biografi":user_biografi}) 
 
 @login_required
 def user_profile(request, username):
@@ -237,10 +265,6 @@ def message(request):
     return render(request,'messaging.html',{'istekler': istekler})
 
 
-def map(request):
-    return render(request,"map.html")
-
-
 def views_logout(request):
     logout(request)
     return redirect("login")  
@@ -259,7 +283,7 @@ def get_location(city, district, neighborhood):
         return None, None
 
 def show_on_map(locations):
-    map_center = [39.9334, 32.8597]  # Ankara koordinatları
+    map_center = [39.9334, 32.8597]  # Ankara koordinatları merkezi göstersin diye
     my_map = folium.Map(location=map_center, zoom_start=6)
     
     for city, district, neighborhood, title, username in locations:
@@ -281,7 +305,6 @@ def map_view(request):
     locations = [(comment['city'], comment['country'], comment['district'], comment['title'], comment['user__username']) for comment in comments]
     my_map = show_on_map(locations)
     
-    # Save the map to a static file
     my_map.save("static/map1.html")
     
     return render(request, 'map.html')

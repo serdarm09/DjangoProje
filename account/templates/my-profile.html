@@ -86,7 +86,20 @@
   <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/choices.js/public/assets/styles/choices.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/flatpickr/dist/flatpickr.min.css' %}">
  <!-- Theme CSS -->
-  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+
+ <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}">
+
+
+
+
+
+ 
+
+
+ 
+ <!-- Theme CSS -->
+ <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+
   
 	 
 </head>
@@ -120,8 +133,7 @@ Header START -->
 						<a class="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sayfalar</a>
 						<ul class="dropdown-menu" aria-labelledby="pagesMenu">
 							<li> <a class="dropdown-item" href="/home">Anasayfa</a></li>
-							<li> <a class="dropdown-item" href="/company">Kuruluşlar</a></li>
-              <li> <a class="dropdown-item" href="/map">Haritasal Bağış</a></li>
+              <li> <a class="dropdown-item" href="/map">Bağış Haritası</a></li>
 						</ul>
 					</li>
 
@@ -129,7 +141,7 @@ Header START -->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hesap </a>
 						<ul class="dropdown-menu" aria-labelledby="postMenu">
-              <li> <a class="dropdown-item" href="#">Bağış istekleri</a> </li>
+              <li> <a class="dropdown-item" href="/message">Bağış istekleri</a> </li>
 							<li> <a class="dropdown-item" href="settings">Ayarlar</a> </li>
 						  <li> <a class="dropdown-item" href="help-details">Yardım ve İletişim</a> </li>
               <!-- dropdown submenu open left -->
@@ -142,9 +154,23 @@ Header START -->
 
 			<!-- Nav right START -->
 			<ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
+        <li class="nav-item ms-2">
+					<a class="nav-link bg-light icon-md btn btn-light p-0" href="/message">
+						<i class="bi bi-chat-left-text-fill fs-6"> </i>
+					</a>
+				</li>
+       				<li class="nav-item ms-2">
+						<a class="nav-link bg-light icon-md btn btn-light p-0" href="/settings">
+							<i class="bi bi-gear-fill fs-6"> </i>
+						</a>
+					</li>
         <li class="nav-item ms-2 dropdown">
 					<a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-						<img class="avatar-img rounded-2"  src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
+            {% if user.userprofile.profile_picture%}
+            <img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+        {% else %}
+            <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+        {% endif %}
 					</a>
           <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
             <!-- Profile info -->
@@ -152,7 +178,11 @@ Header START -->
               <div class="d-flex align-items-center position-relative">
                 <!-- Avatar -->
                 <div class="avatar me-3">
-                  <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="avatar">
+                  {% if user.userprofile.profile_picture%}
+                  <img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+              {% else %}
+                  <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+              {% endif %}
                 </div>
                 <div>
                   <div>	
@@ -243,15 +273,15 @@ Header END -->
                           <div class="avatar avatar-xxl mt-n5 mb-3">
                             {% if user.userprofile.profile_picture%}
                             <img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
-                        {% else %}
+                          {% else %}
                             <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
-                        {% endif %}
+                          {% endif %}
                           </div>
                       </div>
                       <div class="ms-sm-4 mt-sm-3">
                           <!-- Info -->
                           <div>
-                              <h1 class="mb-0 h5">{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
+                              <h1 class="mb-0 h5">{{ user.username }} <i class="bi bi-patch-check-fill text-success small"></i></h1>
                           </div>
                           <!-- Button -->
                           <div class="d-flex mt-3 justify-content-center ms-sm-auto">
@@ -261,9 +291,10 @@ Header END -->
                         </div>
                         
                       </div>
+
                       <!-- List profile -->
                       <ul class="list-unstyled mb-0 mt-3 mt-sm-0">
-                          <li class="mb-2"><i class="bi bi-geo-alt me-1"></i></li>
+                        <br></br>
                           <li class="mb-2"><i class="bi bi-geo-alt me-1"></i>Kahramanmaraş</li>
                           <li class="mb-2"><i class="bi bi-calendar2-plus me-1"></i> Kayıt Tarihi: {{user.date_joined}}</li>
                       </ul>
@@ -318,7 +349,7 @@ Header END -->
                           </div>
                           <!-- Info -->
                           <div>
-                              <h1 class="mb-0 h5">{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
+                              <h1 class="mb-0 h5">{{ user.username }} <i class="bi bi-patch-check-fill text-success small"></i></h1>
                           </div>
                       </div>
                       <!-- Card feed action dropdown START -->
@@ -328,7 +359,7 @@ Header END -->
               <!-- Card header END -->
               <!-- Card body START -->
               <div class="card-body">
-                  <h1 class="mb-0 h5">{{post.title }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
+                  <h1 class="mb-0 h5">{{post.title }}</h1>
                   <p>{{ post.content }}</p>
               <p class="small mb-0">Şehir: {{ post.country }}</p>
 							<p class="small mb-0">İlçe: {{ post.city }}</p>
@@ -376,10 +407,14 @@ Header END -->
               </div>
               <!-- Card body START -->
               <div class="card-body position-relative pt-0">
-                <p>Merhabalar ben serdar Bilgisayar mühendiliği 3 sınıfım</p>
+                {% if user_biografi %}
+                <p>{{ user_biografi.bio }}</p>
+              {% else %}
+                  <p>Henüz biyografi eklenmemiş.</p>
+              {% endif %}
                 <!-- Date time -->
                 <ul class="list-unstyled mt-3 mb-0">
-                  <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i>  </li>
+                  <li class="mb-2"> </li>
                 </ul>
               </div>
               <!-- Card body END -->

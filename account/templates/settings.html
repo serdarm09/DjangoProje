@@ -117,9 +117,9 @@ Header START -->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="homeMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sayfalar</a>
 						<ul class="dropdown-menu" aria-labelledby="homeMenu">
-							<li> <a class="dropdown-item" href="home">Anasayfa</a></li>
-							<li> <a class="dropdown-item" href="profil">Profil</a></li>
-							<li> <a class="dropdown-item" href="error">Harita</a></li>
+							<li> <a class="dropdown-item" href="/home">Anasayfa</a></li>
+							<li> <a class="dropdown-item" href="/profil">Profil</a></li>
+							<li> <a class="dropdown-item" href="/error">Harita</a></li>
 						</ul>
 					</li>
 					<!-- Nav item 2 Pages -->
@@ -136,7 +136,7 @@ Header START -->
 					</a>
 				</li>
        				<li class="nav-item ms-2">
-						<a class="nav-link bg-light icon-md btn btn-light p-0" href="settings">
+						<a class="nav-link bg-light icon-md btn btn-light p-0" href="/settings">
 							<i class="bi bi-gear-fill fs-6"> </i>
 						</a>
 					</li>
@@ -164,19 +164,18 @@ Header START -->
                   <a class="h6 stretched-link" href="#">{{user.username}}</a>
                 </div>
               </div>
-              <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href='profil'>Profilini görüntüle</a>
+              <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href='/profil'>Profilini görüntüle</a>
 
             </li>
 			<li> <hr class="dropdown-divider"></li>
             <li> 
-              <a class="dropdown-item" href='profil' target="_blank">
+              <a class="dropdown-item" href='/home' target="_blank">
                 <i class="fa-fw bi bi-card-text me-2"></i>Anasayfa
               </a> 
             </li>
             <li class="dropdown-divider"></li>
             <li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'logout' %}"><i class="bi bi-power fa-fw me-2"></i>Çıkış yap</a></li>
             <li> <hr class="dropdown-divider"></li>
-            <!-- Dark mode options START -->
 						<li>
 							<div class="modeswitch-item theme-icon-active d-flex justify-content-center gap-3 align-items-center p-2 pb-0">
 								<span>Sayfa Teması:</span>
@@ -201,11 +200,8 @@ Header START -->
 								</button>
 							</div>
 						</li> 
-						<!-- Dark mode options END-->
           		</ul>
 				</li>
-			  <!-- Profile START -->
-        
 			</ul>
 			<!-- Nav right END -->
 		</div>
@@ -270,7 +266,7 @@ Header END -->
 		<div class="col-12 text-end">
 			<button type="submit" class="btn btn-primary-soft">Değişiklikleri kaydet</button>
 		</div>
-	</form>
+		</form>
 	
       <!-- Settings END -->
   </div>
@@ -305,19 +301,39 @@ Header END -->
 			  <button type="submit" class="btn btn-primary-soft">Profilini kaydet</button>
 		  </div>
 	  </form>
-	  
-		<!-- Settings END -->
+		</div>
+ 		</div>
+
+        </div>
+	<!-- biografi.html -->
+<div class="card mb-4">
+	<!-- Title START -->
+	<div class="card-header border-0 pb-0">
+	  <h1 class="h5 card-title">Biografi ayarları</h1>
+	</div>
+	<div class="card-body">
+	  <!-- Form settings START -->
+	  <form class="row g-3" method="POST" action="{% url 'biografi' %}" enctype="multipart/form-data">
+		{% csrf_token %}
+		<!-- Bio Field -->
+		<div class="col-12">
+		  <label for="bio" class="form-label">Biyografi</label>
+		  <textarea class="form-control" id="bio" name="bio" rows="5">{% if biografi %}{{ biografi.bio }}{% endif %}</textarea>
+		</div>
+		<!-- Button  -->
+		<div class="col-12 text-end">
+		  <button type="submit" class="btn btn-primary-soft">Değişiklikleri kaydet</button>
+		</div>
+	  </form>
+	  <!-- Settings END -->
 	</div>
 	<!-- Card body END -->
   </div>
-<!-- Card END -->
-        <p class="small text-center mt-1">©2023 <a class="text-reset" target="_blank" href="https://github.com/serdarm09/DjangoProje"> Bağış yuvası </a></p>
-        </div>
-
+  
     </div> <!-- Row END -->
   </div>
   <!-- Container END -->
-
+  <p class="small text-center mt-1">©2023 <a class="text-reset" target="_blank" href="https://github.com/serdarm09/DjangoProje"> Bağış yuvası </a></p>
 </main>
 
 <!-- Modal login activity END -->

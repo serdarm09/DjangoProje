@@ -124,12 +124,7 @@ Header START -->
 				</span>
 			</button>
 			<div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
-				<div class="nav-item w-100">
-				  <form class="rounded position-relative">
-					<input class="form-control ps-5 bg-light" type="search" placeholder="Bağış Arama..." aria-label="Search">
-					<button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>
-				  </form>
-				</div>
+			
 			  </div>
 
 			<!-- Main navbar START -->
@@ -304,7 +299,11 @@ Header END -->
 										{% endif %}
                                         </div>
 								
-                                        <p class="mt-3">-_-</p>
+                                    {% if user_biografi %}
+                            		<p>{{ user_biografi.bio }}</p>
+                        			{% else %}
+                            			<p>Henüz biyografi eklenmemiş.</p>
+                        			{% endif %}
                                     </div>
                                 </div>
                                 <!-- Card body END -->
@@ -478,14 +477,19 @@ Header END -->
                             <div class="card-body">
 								<div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0"style="max-width: 250px;">
 									<div class="nav-item w-100">
-									  <form class="rounded position-relative">
-										<input class="form-control ps-5	 bg-light" type="search" placeholder="Kullanıcı Arama..." aria-label="Search">
-										<button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>
-									  </form>	
-									</div>
+										<form class="rounded position-relative" method="GET" action="{% url 'home' %}">
+										  <input class="form-control ps-5 bg-light" type="search" name="q" placeholder="Kullanıcı Arama..." aria-label="Search">
+										  <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit">
+											<i class="bi bi-search fs-5"> </i>
+										  </button>
+										</form>
+									  </div>
+									  
 								  </div>
 								  <br></br>
                                 <!-- Connection item START -->
+								{% block content %}
+								{% if users %}
                                 {% for user in users %}
                                 <div class="hstack gap-2 mb-3">
                                     <!-- Avatar -->
@@ -516,6 +520,10 @@ Header END -->
                                 <!-- Card body END -->
                             </div>
 							 {% endfor %}
+							 {% else %}
+							 <p>Sonuç bulunamadı.</p>
+						   {% endif %}
+						   {% endblock %}
                         </div>
                     </div>
                 </div>
