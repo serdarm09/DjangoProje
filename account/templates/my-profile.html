@@ -330,6 +330,10 @@ Header END -->
               <div class="card-body">
                   <h1 class="mb-0 h5">{{post.title }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
                   <p>{{ post.content }}</p>
+              <p class="small mb-0">Şehir: {{ post.country }}</p>
+							<p class="small mb-0">İlçe: {{ post.city }}</p>
+							<p class="small mb-0">Mahaller: {{ post.district }}</p>
+							<p class="small mb-0">Tarih: {{ post.created_at }}</p>
                 {% if post.image %}
 							  <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-3">
 							  {% endif %}

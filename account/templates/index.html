@@ -139,7 +139,8 @@ Header START -->
 				<ul class="navbar-nav navbar-nav-scroll ms-auto">
 					<a class="nav-link" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Anasayfa </a>
 					<!-- Nav item 1 Demos -->
-					<a class="nav-link" href="/company" id="postMenu">Onaylı kuruluşlar </a>
+					<a class="nav-link" href="/map" id="postMenu">Bağış Haritası</a>
+				
 					<!-- Nav item 3 Post -->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hesap İşlemleri </a>
@@ -339,9 +340,15 @@ Header END -->
 							<div class="mb-3">
 								<input type="text" class="form-control pe-4 border-0" name="post_title" placeholder="Başlık">
 							</div>
-								<input type="text" class="form-control pe-4 border-0" name="post_country" placeholder="İl bilgisi giriniz...">
-								<input type="text" class="form-control pe-4 border-0" name="post_city" placeholder="İlçe bilgisi giriniz...">
-								<input type="text" class="form-control pe-4 border-0" name="post_district" placeholder="Mahalle bilgisi giriniz...">
+							<div class="mb-3">
+								<input type="text" class="form-control pe-4 border-0" name="post_country" placeholder="İl bilgisi giriniz">
+							</div>
+								<div class="mb-3">
+								<input type="text" class="form-control pe-4 border-0" name="post_city" placeholder="İlçe bilgisi giriniz">
+							</div>
+								<div class="mb-3">
+								<input type="text" class="form-control pe-4 border-0" name="post_district" placeholder="Mahalle bilgisi giriniz (isteğe bağlı boş bırakıla bilir)">
+							</div>
 							<div class="mb-3">
 								<textarea class="form-control pe-4 border-0" rows="2" data-autoresize name="post_content" placeholder="Bağış postu açıklama alanı..."></textarea>
 							</div>
@@ -379,7 +386,7 @@ Header END -->
 										<a href="/profile/{{post.user.username}}">{{ post.user.username }} &#x2714;</a>
 									</span>
 									{% else %}
-									<span class="h6 stretched">
+									<span class="h6 stretched">	
 										<a href="/profile/{{post.user.username}}">{{ post.user.username }} </a>
 									</span>
 									{% endif %}
@@ -387,14 +394,17 @@ Header END -->
 							</div>
 							<div style="margin-bottom: 20px;"></div>
 							<!-- Başlık -->
-							<h6 class="card-title">{{ post.title }}</h6>
+							<h5 class="card-title">{{ post.title }}</h5>
 							<!-- İçerik -->
-							<p class="small mb-0">{{ post.content }}</p>
-							<!-- Tarih -->
-							<p class="small mb-0">Tarih: {{ post.created_at }}</p>
+							
+							<h6 class="small mb-0">{{ post.content }}</h6>
+					
+							
 							<p class="small mb-0">Şehir: {{ post.country }}</p>
-							<p class="small mb-0">İlçe {{ post.city }}</p>
-							<p class="small mb-0">Mahaller: {{ post.district }}</p>
+							<p class="small mb-0">İlçe: {{ post.city }}</p>
+							<p class="small mb-0">Mahalle: {{ post.district }}</p>
+							<p class="small mb-0">Tarih: {{ post.created_at }}</p>
+
 							<!-- Resim -->
 							{% if post.image %}
 							<img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-3">
@@ -559,7 +569,11 @@ Header END -->
 				<li class="mt-3 hstack gap-3 align-items-center position-relative">
 					<!-- Avatar -->
 					<div class="avatar status-online">
+						{% if istek.user.userprofile.profile_picture %}
+						<img class="avatar-img rounded-circle" src="{{ istek.user.userprofile.profile_picture.url }}" alt="">
+						{% else %}
 						<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
+						{% endif %}
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">

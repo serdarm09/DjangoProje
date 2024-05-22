@@ -26,5 +26,6 @@ urlpatterns = [
     path('bagis_istegi_gonder/<int:post_id>/', views.bagis_istegi_gonder, name='bagis_istegi_gonder'),   
     path('post-action/<int:post_id>/', views.post_action, name='post_action'),
     path('donations', views.donations, name='donations'),  
-    path('company', views.company, name='company'),  
+    path('map', views.map, name='map'),  
+    path('map/', views.map_view, name='map'),
 ]

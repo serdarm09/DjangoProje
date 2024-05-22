@@ -6,7 +6,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Comment,UserProfile,BagisIstegi
 from PIL import Image
 from django.core.exceptions import ValidationError
-
+from geopy.geocoders import Nominatim
+import folium
 
 
 def views_login(request):
@@ -230,13 +231,57 @@ def donations(request):
 
 @login_required
 def message(request):
-    return render(request,'messaging.html')
+    
+    istekler = BagisIstegi.objects.filter(post__user=request.user)
+    
+    return render(request,'messaging.html',{'istekler': istekler})
 
 
-def company(request):
-    return render(request,"Company.html")
+def map(request):
+    return render(request,"map.html")
 
 
 def views_logout(request):
     logout(request)
     return redirect("login")  
+
+
+##########################################################################################
+################MAP#################
+
+
+def get_location(city, district, neighborhood):
+    geolocator = Nominatim(user_agent="ac8ff2b6337c431bba6568c8ee221e55")
+    location = geolocator.geocode(f"{neighborhood}, {district}, {city}, Turkey")
+    if location:
+        return location.latitude, location.longitude
+    else:
+        return None, None
+
+def show_on_map(locations):
+    map_center = [39.9334, 32.8597]  # Ankara koordinatları
+    my_map = folium.Map(location=map_center, zoom_start=6)
+    
+    for city, district, neighborhood, title, username in locations:
+        lat, lon = get_location(city, district, neighborhood)
+        if lat and lon:
+            folium.Marker(
+                location=[lat, lon],
+                popup=f"{title} by {username}<br>{neighborhood}, {district}, {city}",
+                icon=folium.Icon(color='blue', icon='info-sign')
+            ).add_to(my_map)
+        else:
+            print(f"Location not found: {neighborhood}, {district}, {city}")
+    
+    return my_map
+
+
+def map_view(request):
+    comments = Comment.objects.filter(comment_isactive=True, comment_succes=False).values('city', 'country', 'district', 'title', 'user__username')
+    locations = [(comment['city'], comment['country'], comment['district'], comment['title'], comment['user__username']) for comment in comments]
+    my_map = show_on_map(locations)
+    
+    # Save the map to a static file
+    my_map.save("static/map1.html")
+    
+    return render(request, 'map.html')

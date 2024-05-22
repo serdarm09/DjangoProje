@@ -120,7 +120,7 @@ Header START -->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sayfalar</a>
 						<ul class="dropdown-menu" aria-labelledby="pagesMenu">
-							<li> <a class="dropdown-item" href="/home">Anasayfa</a></li>
+							<li> <a class="dropdown-item" href='/home'>Anasayfa</a></li>
 							<li> <a class="dropdown-item" href="/company">Kuruluşlar</a></li>
               <li> <a class="dropdown-item" href="/map">Haritasal Bağış</a></li>
 						</ul>
@@ -258,7 +258,6 @@ Header END -->
                   <!-- Nav profile pages -->
                   <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
                       <li class="nav-item"> <a class="nav-link active" href="my-profile.html"> Gönderileri </a> </li>
-                      <li class="nav-item"> <a class="nav-link" href="my-profile-about.html"> Başarılı Bağışlarım </a> </li>
                   </ul>
               </div>
           </div>
@@ -297,19 +296,18 @@ Header END -->
               <div class="card-body">
                   <h1 class="mb-0 h5">{{post.title }}<i class="bi bi-patch-check-fill text-success small"></i></h1>
                   <p>{{ post.content }}</p>
+                  <p class="small mb-0">Şehir: {{ post.country }}</p>
+							    <p class="small mb-0">İlçe: {{ post.city }}</p>
+							    <p class="small mb-0">Mahaller: {{ post.district }}</p>
+							    <p class="small mb-0">Tarih: {{ post.created_at }}</p>
+                  {% if post.image %}
+                  <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-3">
+                  {% endif %}
               </div>
+              
               <!-- Card body END -->
               <!-- Card footer START -->
-              <div class="card-footer border-0 pt-0">
-                  <!-- Load more comments -->
-                  <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
-                      <div class="spinner-dots me-2">
-                          <span class="spinner-dot"></span>
-                          <span class="spinner-dot"></span>
-                          <span class="spinner-dot"></span>
-                      </div>
-                  </a>
-              </div>
+             
               <!-- Card footer END -->
           </div>
           {% endfor %}
