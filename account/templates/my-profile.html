@@ -367,21 +367,24 @@ Header END -->
 							<p class="small mb-0">Tarih: {{ post.created_at }}</p>
                 {% if post.image %}
 							  <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid mt-3">
-							  {% endif %}
+							  {% endif %} 
+                <form method="post" action="{% url 'post_action' post.id %}">
+								{% csrf_token %}
+                <p></p>
+								<input type="hidden" name="action" value="delete">
+								<button type="submit" class="btn btn-primary-soft">Bağışı kaldır</button>
+							</form>
+              <p></p>
+							<form method="post" action="{% url 'post_action' post.id %}">
+								{% csrf_token %}
+								<input type="hidden" name="action" value="success">
+								<button type="submit" class="btn btn-primary-soft">Bağış Başarılı</button>
+							</form>
               </div>
               <!-- Card body END -->
               <!-- Card footer START -->
               
-              <form method="post" action="{% url 'post_action' post.id %}">
-								{% csrf_token %}
-								<input type="hidden" name="action" value="delete">
-								<button type="submit" class="btn btn-primary">Bağışı kaldır</button>
-							</form>
-							<form method="post" action="{% url 'post_action' post.id %}">
-								{% csrf_token %}
-								<input type="hidden" name="action" value="success">
-								<button type="submit" class="btn btn-primary">Bağış Başarılı</button>
-							</form>
+             
             
               <!-- Card footer END -->
           </div> 

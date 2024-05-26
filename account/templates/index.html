@@ -132,7 +132,7 @@ Header START -->
 
 
 				<ul class="navbar-nav navbar-nav-scroll ms-auto">
-					<a class="nav-link" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Anasayfa </a>
+					<a class="nav-link active" href="/home">Anasayfa</a>
 					<!-- Nav item 1 Demos -->
 					<a class="nav-link" href="/map" id="postMenu">Bağış Haritası</a>
 				
@@ -257,7 +257,7 @@ Header END -->
                     <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
                         <span class="btn btn-primary-soft"><i class="fa-solid fa-sliders-h"></i></span>
-                        <span class="h6 mb-0 fw-bold d-lg-none ms-2">My profile</span>
+                        <span class="h6 mb-0 fw-bold d-lg-none ms-2">Profilim</span>
                     </button>
                 </div>
                 <!-- Advanced filter responsive toggler END -->
@@ -401,7 +401,9 @@ Header END -->
 							
 							<p class="small mb-0">Şehir: {{ post.country }}</p>
 							<p class="small mb-0">İlçe: {{ post.city }}</p>
+							{% if  post.district %}
 							<p class="small mb-0">Mahalle: {{ post.district }}</p>
+							{% endif %}
 							<p class="small mb-0">Tarih: {{ post.created_at }}</p>
 
 							<!-- Resim -->
@@ -418,19 +420,20 @@ Header END -->
 							<form method="post" action="{% url 'post_action' post.id %}">
 								{% csrf_token %}
 								<input type="hidden" name="action" value="delete">
-								<button type="submit" class="btn btn-primary">Bağışı kaldır</button>
+								<button type="submit"class="btn btn-primary-soft">Bağışı kaldır</button>
 							</form>
+							<p></p>
 							<form method="post" action="{% url 'post_action' post.id %}">
 								{% csrf_token %}
 								<input type="hidden" name="action" value="success">
-								<button type="submit" class="btn btn-primary">Bağış Başarılı</button>
+								<button type="submit" class="btn btn-primary-soft">Bağış Başarılı</button>
 							</form>
 							{% endif %}
 
 						</div>
 						</div>
 
-						<!-- İstek Modalı -->
+						<!-- İstek Modeli -->
 						<div class="modal fade" id="istekModal{{ post.id }}" tabindex="-1" aria-labelledby="istekModal{{ post.id }}Label" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">

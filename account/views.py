@@ -230,7 +230,7 @@ def profil(request):
             return redirect('profil')
     # Kullanıcının oluşturduğu postları filtrele
     user_biografi = Biografi.objects.filter(user=request.user).first()
-    comments = Comment.objects.filter(user__username=request.user, comment_isactive=True)
+    comments = Comment.objects.filter(user__username=request.user, comment_isactive=True,comment_succes=False)
     user = User.objects
     
     # Şablonla kullanıcı postlarını gönder
@@ -307,4 +307,7 @@ def map_view(request):
     
     my_map.save("static/map1.html")
     
-    return render(request, 'map.html')
+    users = User.objects.all()
+    
+    
+    return render(request, 'map.html',{'user':users})

@@ -125,7 +125,7 @@ Header START -->
         <ul class="navbar-nav navbar-nav-scroll mx-auto">
           <!-- Nav item 1 Demos -->
           <li class="nav-item">
-            <a class="nav-link active" href="/home">Anasayfa</a>
+            <a class="nav-link" href="/home">Anasayfa</a>
           </li>
           <!-- Nav item 1 Demos -->
           <li class="nav-item">
@@ -139,6 +139,9 @@ Header START -->
           <li class="nav-item">
             <a class="nav-link" href="/donations">Bağışlarım</a>
           </li>
+          <li class="nav-item active">
+            <a class="nav-link active" href="/map">Haritasal Bağış</a>
+          </li>
           <!-- Nav item 2 Pages -->
         </ul>
       </div>
@@ -146,11 +149,18 @@ Header START -->
 
       <!-- Nav right START -->
       <ul class="nav flex-nowrap align-items-center ms-lg-3 list-unstyled">
+        
+
         <li class="nav-item ms-2">
-          <a class="nav-link icon-md btn p-0"  href="/settings">
-            <i class="bi bi-gear-fill fs-6"> </i>
-          </a>
-        </li>
+					<a class="nav-link bg-light icon-md btn btn-light p-0" href="/message">
+						<i class="bi bi-chat-left-text-fill fs-6"> </i>
+					</a>
+				</li>
+				<li class="nav-item ms-2">
+					<a class="nav-link bg-light icon-md btn btn-light p-0" href="settings">
+						<i class="bi bi-gear-fill fs-6"> </i>
+					</a>
+				</li>
 
         <!-- Notification dropdown END -->
 
@@ -158,13 +168,19 @@ Header START -->
           <a class="nav-link p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="d-flex align-items-center position-relative">
               <!-- Avatar -->
-              <div class="avatar avatar-sm me-xl-3">
-                <img class="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt="avatar">
-              </div>
-              <div class="d-none d-xl-block">
-                <span class="h6 stretched-link">SerdarDeneme</span>
-
-              </div>
+              <div class="avatar me-3">
+								{% if user.userprofile.profile_picture%}
+									<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+								{% else %}
+									<a href="#"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+								{% endif %}
+								</div>
+								{% if user.is_authenticated %}
+								<div>	
+									<a class="h6 stretched-link" href="#">{{user.username}}</a>
+									<!--<p class="small m-0">Web Developer</p>-->
+								</div>
+                {% endif %}
             </div>
           </a>
           <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
@@ -177,7 +193,7 @@ Header START -->
               </a> 
             </li>
             <li class="dropdown-divider"></li>
-            <li><a class="dropdown-item bg-danger-soft-hover" href="sign-in-advance.html"><i class="bi bi-power fa-fw me-2"></i>Çıkış yap</a></li>
+            <li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'logout' %}"><i class="bi bi-power fa-fw me-2"></i>Çıkış yap</a></li>
             <li> <hr class="dropdown-divider"></li>
             <!-- Dark mode options START -->
 						<li>
@@ -229,19 +245,29 @@ Header END -->
         <div class="offcanvas-body pt-5 pt-lg-0">
           <!-- Avatar -->
           <div class="avatar avatar-lg mb-3">
-            <a href="#!"><img class="avatar-img rounded-circle border border-white border-3" src="assets/images/avatar/07.jpg" alt=""></a>
+            {% if user.userprofile.profile_picture%}
+									<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
+								{% else %}
+									<a href="#"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
+								{% endif %}
           </div>
           <!-- Info -->
-          <h5 class="mb-0"> <a href="#!">SerdarDeneme </a> </h5>
-          <!-- User stat START -->
-          <div class="hstack gap-2 gap-xl-3 mt-3">
-            <!-- User stat item -->
+          
+								
+								{% if user.is_authenticated %}
+								<div>	
+									<a class="h6 stretched-link" href="#">{{user.username}}</a>
+									<!--<p class="small m-0">Web Developer</p>-->
+								</div>
+                {% endif %}
+          <!-- User stat START 
+          <div class="hstack gap-2 gap-xl-3 mt-3">  
             <div>
               <h6 class="mb-0">256</h6>
               <small>Gönderi</small>
             </div>
           </div>
-          <!-- User stat END -->
+           User stat END -->
 
           <!-- Divider -->
           <hr>
@@ -251,15 +277,9 @@ Header END -->
 
           <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
             <li class="nav-item">
-              <a class="nav-link" href="#!">
+              <a class="nav-link" href="/home">
                 <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/home-outline-filled.svg' %}" alt="">
                 <span>Anasayfa </span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#!">
-                <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/medal-outline-filled.svg' %}" alt="">
-                <span>Kuruluşlar </span>
               </a>
             </li>
             <li class="nav-item">
@@ -274,8 +294,9 @@ Header END -->
                 <span>Ayarlar </span>
               </a>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'logout' %}">
                 <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/arrow-boxed-outline-filled.svg' %}" alt="">
                 <span>Çıkış yap </span>
               </a>
