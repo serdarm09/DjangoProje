@@ -253,9 +253,11 @@ def donations(request):
     # Yalnızca başarılı olan kullanıcı postlarını filtrele
     comments = Comment.objects.filter(user__username=request.user.username, comment_succes=True, comment_isactive=True)
     user = User.objects.all()
+    user_biografi = Biografi.objects.filter(user=request.user).first()
+    user = User.objects
     
     # Şablonla kullanıcı postlarını gönder  
-    return render(request, 'donations.html', {'user_posts': comments, 'users_data': user})
+    return render(request, 'donations.html', {'users':user,'user_posts': comments, 'users_data': user,"user_biografi":user_biografi})
 
 @login_required
 def message(request):

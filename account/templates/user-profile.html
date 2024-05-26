@@ -155,8 +155,8 @@ Header START -->
             <!-- Profile info -->
             <!-- Links -->
             <li> 
-              <a class="dropdown-item" href="/home" target="_blank">
-                <i class="fa-fw bi bi-life-preserver me-2"></i>Anasayfa
+              <a class="dropdown-item" href="/profil" target="_blank">
+                <i class="fa-fw bi bi-life-preserver me-2"></i>Profil
               </a> 
             </li>
             <li class="dropdown-divider"></li>
@@ -323,52 +323,95 @@ Header END -->
         <div class="row g-4">
 
           <!-- Card START -->
-          <div class="col-md-6 col-lg-12">
-            <div class="card">
-              <div class="card-header border-0 pb-0">
-                <h5 class="card-title">Hakkımda</h5>
-                <!-- Button modal -->
-              </div>
-              <!-- Card body START -->
-              <div class="card-body position-relative pt-0">
-                <p>Merhabalar ben serdar Bilgisayar mühendiliği 3 sınıfım</p>
-                <!-- Date time -->
-                <ul class="list-unstyled mt-3 mb-0">
-                  <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Doğum Tarihi: <strong> October 20, 1990 </strong> </li>
-                </ul>
-              </div>
-              <!-- Card body END -->
-            </div>
-          </div>
+          
           <!-- Card END -->
 
           <!-- Card START -->
           <div class="col-md-6 col-lg-12">
             <div class="card">
-              <!-- Card header START -->
-              <div class="card-header d-flex justify-content-between border-0">
-                <h5 class="card-title">Önerilen onaylı kuruluşlar</h5>
-                <a class="btn btn-primary-soft btn-sm" href="#!"> <i class="fa-solid fa-plus"></i> </a>
-              </div>
-              <!-- Card header END -->
-              <!-- Card body START -->
-              <div class="card-body position-relative pt-0">
-                <!-- Experience item START -->
-                <div class="d-flex">
-                  <!-- Avatar -->
-                  <div class="avatar me-3">
-                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
-                  </div>
-                  <!-- Info -->
-                  <div>
-                    <h6 class="card-title mb-0"><a href="#!"> userName </a></h6>
-                  </div>
+                <!-- Card header START -->
+                <div class="card-header d-flex justify-content-between border-0">
+                    <h5 class="card-title">Önerilen onaylı kuruluşlar</h5>
+                    <a class="btn btn-primary-soft btn-sm" href="#!"> <i class="fa-solid fa-plus"></i> </a>
                 </div>
-                <!-- Experience item END -->
-              </div>
-              <!-- Card body END -->
+                <!-- Card header END -->
+                <!-- Card body START -->
+                <div class="card-body position-relative pt-0">
+                    <!-- Experience item START -->
+                    <div class="d-flex mb-3">
+                        <!-- Avatar -->
+                        <div class="avatar me-3">
+                            <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/ahbap.jpg' %}" alt=""> </a>
+                        </div>
+                        <!-- Info -->
+                        <div>
+                            <h6 class="card-title mb-0"><a href="https://ahbap.org/"> Ahbap </a></h6>
+                        </div>
+                    </div>
+                    <!-- Experience item END -->
+                </div>
+                <div class="card-body position-relative pt-0">
+                    <!-- Experience item START -->
+                    <div class="d-flex mb-3">
+                        <!-- Avatar -->
+                        <div class="avatar me-3">
+                            <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/yesilay.jpg' %}" alt=""> </a>
+                        </div>
+                        <!-- Info -->
+                        <div>
+                            <h6 class="card-title mb-0"><a href="https://www.yesilay.org.tr/tr/"> Yeşilay </a></h6>
+                        </div>
+                    </div>
+                    <!-- Experience item END -->
+                </div>
+                <div class="card-body position-relative pt-0">
+                    <!-- Experience item START -->
+                    <div class="d-flex mb-3">
+                        <!-- Avatar -->
+                        <div class="avatar me-3">
+                            <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/kızılay.jpg' %}" alt=""> </a>
+                        </div>
+                        <!-- Info -->
+                        <div>
+                            <h6 class="card-title mb-0"><a href="https://www.kizilay.org.tr/"> Kızılay </a></h6>
+                        </div>
+                    </div>
+                    <!-- Experience item END -->
+                </div>
+                <div class="card-body position-relative pt-0">
+                    <!-- Experience item START -->
+                    <div class="d-flex mb-3">
+                        <!-- Avatar -->
+                        <div class="avatar me-3">
+                            <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/afad.jpg' %}" alt=""> </a>
+                        </div>
+                        <!-- Info -->
+                        <div>
+                            <h6 class="card-title mb-0"><a href="https://www.afad.gov.tr/"> Afad </a></h6>
+                        </div>
+                    </div>
+                    <!-- Experience item END -->
+                </div>
+                <!-- Card body END -->
             </div>
-          </div>
+        </div>
+        
+        <style>
+            .card-body .d-flex {
+                align-items: center;
+            }
+            .card-body .d-flex.mb-3 {
+                margin-bottom: 1rem;
+            }
+            .avatar img {
+                width: 50px;
+                height: 50px;
+            }
+            .card-title a {
+                text-decoration: none;
+            }
+        </style>
+        
           <!-- Card END -->
           
         

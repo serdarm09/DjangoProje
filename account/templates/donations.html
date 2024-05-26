@@ -115,48 +115,18 @@ Header START -->
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 
         <!-- Nav Search START -->
-        <div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
-          <div class="nav-item w-100">
-            <form class="rounded position-relative">
-              <input class="form-control ps-5 bg-light" type="search" placeholder="Search..." aria-label="Search">
-              <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>
-            </form>
-          </div>
-        </div>
+    
         <!-- Nav Search END -->
 
 				<ul class="navbar-nav navbar-nav-scroll ms-auto">
 					<!-- Nav item 1 Demos -->
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="homeMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Demo</a>
-						<ul class="dropdown-menu" aria-labelledby="homeMenu">
-							<li> <a class="dropdown-item" href="/home">Anasayfa</a></li>
-							<li> <a class="dropdown-item" href="index-classic.html">Home classic</a></li>
 					
-              <li class="dropdown-divider"></li>
-					
-						</ul>
-					</li>
 					<!-- Nav item 2 Pages -->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sayfalar</a>
 						<ul class="dropdown-menu" aria-labelledby="pagesMenu">
-							<li> <a class="dropdown-item" href="albums.html">Anasayfa</a></li>
-							<li> <a class="dropdown-item" href="events.html"></a></li>
-							<li> <a class="dropdown-item" href="events-2.html">Events 2</a></li>
-							<li> <a class="dropdown-item" href="event-details.html">Event details</a></li>
-	
-              
-							<!-- Dropdown submenu levels -->
-							<li class="dropdown-divider"></li>
-							<li class="dropdown-submenu dropend">
-								<a class="dropdown-item dropdown-toggle" href="#">Dropdown levels</a>
-								<ul class="dropdown-menu dropdown-menu-end" data-bs-popper="none">
-									<li> <a class="dropdown-item" href="#">Dropdown item</a> </li>
-									<li> <a class="dropdown-item" href="#">Dropdown item</a> </li>
-									<!-- dropdown submenu open left -->
-							
-							</li>
+							<li> <a class="dropdown-item" href="/home">Anasayfa</a></li>
+							<li> <a class="dropdown-item" href="/profil">Profil</a></li>
 						</ul>
 					</li>
 
@@ -164,8 +134,8 @@ Header START -->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hesap </a>
 						<ul class="dropdown-menu" aria-labelledby="postMenu">
-							<li> <a class="dropdown-item" href="/settings">Settings</a> </li>
-              <li> <a class="dropdown-item" href="privacy-and-terms.html">Privacy & terms</a> </li>
+							<li> <a class="dropdown-item" href="/settings">Ayarları</a> </li>
+
 						</ul>
 					</li>
 
@@ -383,10 +353,14 @@ Header END -->
               </div>
               <!-- Card body START -->
               <div class="card-body position-relative pt-0">
-                <p>Merhabalar ben serdar Bilgisayar mühendiliği 3 sınıfım</p>
+                {% if user_biografi %}
+                <p>{{ user_biografi.bio }}</p>
+                {% else %}
+                  <p>Henüz biyografi eklenmemiş.</p>
+                {% endif %}
                 <!-- Date time -->
                 <ul class="list-unstyled mt-3 mb-0">
-                  <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i>  </li>
+                  <li class="mb-2"> </li>
                 </ul>
               </div>
               <!-- Card body END -->

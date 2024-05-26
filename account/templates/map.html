@@ -140,7 +140,7 @@ Header START -->
             <a class="nav-link" href="/donations">Bağışlarım</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link active" href="/map">Haritasal Bağış</a>
+            <a class="nav-link active" href="/map">Bağış Haritası</a>
           </li>
           <!-- Nav item 2 Pages -->
         </ul>
@@ -166,22 +166,7 @@ Header START -->
 
         <li class="nav-item ms-3 dropdown">
           <a class="nav-link p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-            <div class="d-flex align-items-center position-relative">
-              <!-- Avatar -->
-              <div class="avatar me-3">
-								{% if user.userprofile.profile_picture%}
-									<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
-								{% else %}
-									<a href="#"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
-								{% endif %}
-								</div>
-								{% if user.is_authenticated %}
-								<div>	
-									<a class="h6 stretched-link" href="#">{{user.username}}</a>
-									<!--<p class="small m-0">Web Developer</p>-->
-								</div>
-                {% endif %}
-            </div>
+        
           </a>
           <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
             <!-- Links -->
@@ -244,13 +229,7 @@ Header END -->
       <div class="offcanvas offcanvas-start custom-scrollbar rounded pt-3" tabindex="-1" id="navbarVerticaloffcanvas">
         <div class="offcanvas-body pt-5 pt-lg-0">
           <!-- Avatar -->
-          <div class="avatar avatar-lg mb-3">
-            {% if user.userprofile.profile_picture%}
-									<img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="">
-								{% else %}
-									<a href="#"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt=""> </a>
-								{% endif %}
-          </div>
+  
           <!-- Info -->
           
 								
@@ -273,7 +252,7 @@ Header END -->
           <hr>
 
           <!-- Side Nav START -->
-          {% load static %}
+         
 
           <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
             <li class="nav-item">
