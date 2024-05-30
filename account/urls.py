@@ -28,4 +28,6 @@ urlpatterns = [
     path('donations', views.donations, name='donations'),  
     path('map/', views.map_view, name='map'),
     path('biografi/', views.biografi, name='biografi'),
+    path('istek_kabul/<int:id>/', views.istek_kabul, name = 'istek_kabul'),
+    path('istek_red/<int:id>/', views.istek_red, name = 'istek_red')
 ]

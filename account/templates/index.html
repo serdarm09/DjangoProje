@@ -304,7 +304,8 @@ Header END -->
                         			{% else %}
                             			<p>Henüz biyografi eklenmemiş.</p>
                         			{% endif %}
-                                    </div>
+                                    
+								</div>
                                 </div>
                                 <!-- Card body END -->
                             </div>
@@ -315,6 +316,7 @@ Header END -->
                         </div>
                     </div>
                 </nav>
+				
                 <!-- Navbar END-->
             </div>
             <!-- Sidenav END -->
@@ -361,7 +363,7 @@ Header END -->
 					{% if error_message %}
 					<div class="alert alert-danger" role="alert">
 						{{ error_message }}
-					</div>
+					</div>			
 					{% endif %}
 				</div>
 				
@@ -586,13 +588,20 @@ Header END -->
 						<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
 						{% endif %}
 					</div>
+					
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">{{ istek.user.username }}</a>
+						<a class="h6 mb-0 stretched-link">{{ istek.user.username }}</a>
 						<div class="small text-secondary text-truncate">{{ istek.istek_mesaji }}</div>
 					</div>
 					<!-- Chat time -->
 					<div class="small ms-auto text-nowrap">{{ istek.created_at }}</div>
+					<!-- Actions -->
+					
+				</li>
+				<li>
+					<a href="{% url 'istek_kabul' istek.id %}" class="btn btn-success btn-sm">Kabul</a>
+					<a href="{% url 'istek_red' istek.id %}" class="btn btn-danger btn-sm">Red</a>
 				</li>
 				{% endfor %}
 				<!-- Button -->

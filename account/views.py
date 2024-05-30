@@ -61,7 +61,7 @@ def home(request):
     
     user_biografi = Biografi.objects.filter(user=request.user).first()
     all_posts = Comment.objects.filter(comment_isactive=True,comment_succes=False)
-    istekler = BagisIstegi.objects.filter(post__user=request.user)
+    istekler = BagisIstegi.objects.filter(post__user=request.user, is_active = False)
     paginator = Paginator(all_posts, 10)
     
     page = request.GET.get('page')
@@ -80,6 +80,20 @@ def home(request):
         posts = paginator.page(paginator.num_pages)
     return render(request, 'index.html', {'users': users, 'posts': posts, 'istekler': istekler, 'user_biografi': user_biografi})
 
+
+@login_required
+def istek_kabul(request, id):
+    istek = get_object_or_404(BagisIstegi, id=id)
+    # Kabul işlemleri burada yapıldı
+    istek.is_active = True  # İsteği aktif yaparak kabul edilmiş olarak işaretleyin
+    istek.save()
+    return redirect('home')
+
+@login_required
+def istek_red(request, id):
+    istek = get_object_or_404(BagisIstegi, id=id)
+    istek.delete()  # İsteği reddederek silin
+    return redirect('home')
 
 
 
@@ -222,10 +236,14 @@ def profil(request):
     if request.method == 'POST':
         post_title = request.POST.get('post_title')
         post_content = request.POST.get('post_content')
-        post_image = request.FILES.get('post_image')
+        post_image = request.FILES.get("post_image")
+        post_country = request.POST.get("post_country")
+        post_city = request.POST.get('post_city')
+        post_district = request.POST.get('post_district')
+        
         if post_content:  # Eğer içerik dolu ise
             # Yeni bir post oluştur ve veritabanına kaydet
-            Comment.objects.create(user=request.user, title=post_title, content=post_content, image=post_image)
+            Comment.objects.create(user=request.user, title=post_title, content=post_content, image=post_image, country = post_country ,city=post_city, district=post_district)
             # Post gönderildikten sonra ana sayfaya yönlendir
             return redirect('profil')
     # Kullanıcının oluşturduğu postları filtrele
@@ -256,13 +274,13 @@ def donations(request):
     user_biografi = Biografi.objects.filter(user=request.user).first()
     user = User.objects
     
-    # Şablonla kullanıcı postlarını gönder  
+    # kullanıcı postlarını gönder  
     return render(request, 'donations.html', {'users':user,'user_posts': comments, 'users_data': user,"user_biografi":user_biografi})
 
 @login_required
 def message(request):
     
-    istekler = BagisIstegi.objects.filter(post__user=request.user)
+    istekler = BagisIstegi.objects.filter(post__user=request.user, is_active = True)
     
     return render(request,'messaging.html',{'istekler': istekler})
 
@@ -272,7 +290,7 @@ def views_logout(request):
     return redirect("login")  
 
 
-##########################################################################################
+####################################
 ################MAP#################
 
 
