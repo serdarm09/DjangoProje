@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -44,3 +45,36 @@ class BagisIstegi(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.post.title}"
+    
+    def save(self, *args, **kwargs):
+        created = self.pk is None
+        super().save(*args, **kwargs)
+        if created:
+            Message.objects.create(
+                sender=self.user,
+                receiver=self.post.user,
+                message=self.istek_mesaji,
+                istek=self
+            )
+            
+    
+
+class Message(models.Model):
+    sender = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="sent_messages",
+    )
+    receiver = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="received_messages",
+    )
+    istek = models.ForeignKey(BagisIstegi, on_delete=models.CASCADE, null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
+    is_read = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to='message_image', blank=True, null=True,default='')
+
+    def __str__(self) -> str:
+        return f"{self.sender.username} to {self.receiver.username} at {self.date}"

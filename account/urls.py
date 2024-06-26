@@ -29,5 +29,9 @@ urlpatterns = [
     path('map/', views.map_view, name='map'),
     path('biografi/', views.biografi, name='biografi'),
     path('istek_kabul/<int:id>/', views.istek_kabul, name = 'istek_kabul'),
-    path('istek_red/<int:id>/', views.istek_red, name = 'istek_red')
+    path('istek_red/<int:id>/', views.istek_red, name = 'istek_red'),
+
+    path("get_all_conversations", views.get_all_conversations, name="get_all_conversations"),
+    path("get_messages", views.get_messages, name="get_messages"),
+    path("send_message", views.send_message, name="send_message"),
 ]

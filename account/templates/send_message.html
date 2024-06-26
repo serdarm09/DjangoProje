@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Message</title>
+  <link rel="stylesheet" href="{% static 'path/to/your/css/file.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>Mesaj Gönder</h1>
+    <form method="post" action="{% url 'send_message' istek.user_id %}">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="content" class="form-label">Mesajınız</label>
+        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Gönder</button>
+    </form>
+  </div>
+</body>
+</html>

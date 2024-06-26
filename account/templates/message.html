@@ -1,0 +1,320 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Social - Network, Community and Event Theme</title>
+
+	<!-- Meta Tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Webestica.com">
+	<meta name="description" content="Bootstrap 5 based Social Media Network and Community Theme">
+
+	<!-- Dark mode -->
+	<script>
+		const storedTheme = localStorage.getItem('theme')
+ 
+		const getPreferredTheme = () => {
+			if (storedTheme) {
+				return storedTheme
+			}
+			return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'light'
+		}
+
+		const setTheme = function (theme) {
+			if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				document.documentElement.setAttribute('data-bs-theme', 'dark')
+			} else {
+				document.documentElement.setAttribute('data-bs-theme', theme)
+			}
+		}
+
+		setTheme(getPreferredTheme())
+
+		window.addEventListener('DOMContentLoaded', () => {
+		    var el = document.querySelector('.theme-icon-active');
+			if(el != 'undefined' && el != null) {
+				const showActiveTheme = theme => {
+				const activeThemeIcon = document.querySelector('.theme-icon-active use')
+				const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
+				const svgOfActiveBtn = btnToActive.querySelector('.mode-switch use').getAttribute('href')
+
+				document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
+					element.classList.remove('active')
+				})
+
+				btnToActive.classList.add('active')
+				activeThemeIcon.setAttribute('href', svgOfActiveBtn)
+			}
+
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+				if (storedTheme !== 'light' || storedTheme !== 'dark') {
+					setTheme(getPreferredTheme())
+				}
+			})
+
+			showActiveTheme(getPreferredTheme())
+
+			document.querySelectorAll('[data-bs-theme-value]')
+				.forEach(toggle => {
+					toggle.addEventListener('click', () => {
+						const theme = toggle.getAttribute('data-bs-theme-value')
+						localStorage.setItem('theme', theme)
+						setTheme(theme)
+						showActiveTheme(theme)
+					})
+				})
+
+			}
+		})
+		
+	</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap">
+  
+  <!-- Plugins CSS -->
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/font-awesome/css/all.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/choices.js/public/assets/styles/choices.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/OverlayScrollbars-master/css/OverlayScrollbars.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/flatpickr/dist/flatpickr.css' %}">
+  
+  <!-- Theme CSS -->
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">  
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
+
+	 
+</head>
+
+<body>
+
+<!-- =======================
+Header START -->
+<header class="navbar-light fixed-top header-static bg-mode">
+
+	<!-- Logo Nav START -->
+	<nav class="navbar navbar-expand-lg">
+		<div class="container">
+
+			<!-- Responsive navbar toggler -->
+		
+
+			<!-- Main navbar START -->
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav navbar-nav-scroll ms-auto">
+					<!-- Nav item 1 Demos -->
+			
+					<!-- Nav item 2 Pages -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sayfalar</a>
+						<ul class="dropdown-menu" aria-labelledby="pagesMenu">
+							<li> <a class="dropdown-item" href="/profil">Profil</a></li>
+							<li> <a class="dropdown-item" href="#">Destek ve iletişim</a></li>
+						</ul>
+					</li>
+
+					<!-- Nav item 3 Post -->
+					<!-- Nav item 4 Mega menu -->
+					<li class="nav-item">
+						<a class="nav-link" href='/home'>Ana sayfa</a>
+					</li>
+				</ul>
+			</div>
+			<!-- Main navbar END -->
+
+			<!-- Nav right START -->
+			<ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
+				<li class="nav-item ms-2">
+					<a class="nav-link bg-light icon-md btn btn-light p-0" href="#">
+						<i class="bi bi-chat-left-text-fill fs-6"> </i>
+					</a>
+				</li>
+        <li class="nav-item ms-2">
+					<a class="nav-link bg-light icon-md btn btn-light p-0" href="/settings">
+						<i class="bi bi-gear-fill fs-6"> </i>
+					</a>
+				</li>
+        <!-- Notification dropdown END -->
+
+        <li class="nav-item ms-2 dropdown">
+					<a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+						<img class="avatar-img rounded-2" src="{{user.userprofile.profile_picture.url }}" alt="">
+					</a>
+          <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
+            <!-- Profile info -->
+            <li class="px-3">
+              <div class="d-flex align-items-center position-relative">
+                <!-- Avatar -->
+                <div class="avatar me-3">
+                <img class="avatar-img rounded-circle" src="{{user.userprofile.profile_picture.url }}" alt="avatar">
+                </div>
+                <div>
+                  <a class="h6 stretched-link" href="#">{{user.username }}</a>
+                </div>
+              </div>
+              <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="/profil">Profilini görüntüle </a>
+            </li>
+            <!-- Links -->
+            <li><a class="dropdown-item" href="settings.html"><i class="bi bi-gear fa-fw me-2"></i>Ayarlar</a></li>
+ 
+            <li> 
+              <a class="dropdown-item" href="/home" target="_blank">
+                <i class="fa-fw bi bi-card-text me-2"></i>Anasayfa
+              </a> 
+            </li>
+            <li class="dropdown-divider"></li>
+            <li><a class="dropdown-item bg-danger-soft-hover" href="/loguot"><i class="bi bi-power fa-fw me-2"></i>Çıkış yap</a></li>
+            <li> <hr class="dropdown-divider"></li>
+            <!-- Dark mode options START -->
+						<li>
+							<div class="modeswitch-item theme-icon-active d-flex justify-content-center gap-3 align-items-center p-2 pb-0">
+								<span>Mod:</span>
+								<button type="button" class="btn btn-modeswitch nav-link text-primary-hover mb-0" data-bs-theme-value="light" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Light">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun fa-fw mode-switch" viewBox="0 0 16 16">
+										<path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+										<use href="#"></use>
+									</svg>
+								</button>
+								<button type="button" class="btn btn-modeswitch nav-link text-primary-hover mb-0" data-bs-theme-value="dark" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Dark">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-moon-stars fa-fw mode-switch" viewBox="0 0 16 16">
+										<path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278zM4.858 1.311A7.269 7.269 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.316 7.316 0 0 0 5.205-2.162c-.337.042-.68.063-1.029.063-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286z"/>
+										<path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+										<use href="#"></use>
+									</svg>
+								</button>
+								<button type="button" class="btn btn-modeswitch nav-link text-primary-hover mb-0 active" data-bs-theme-value="auto" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Auto">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-half fa-fw mode-switch" viewBox="0 0 16 16">
+										<path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+										<use href="#"></use>
+									</svg>
+								</button>
+							</div>
+						</li> 
+						<!-- Dark mode options END-->
+          </ul>
+				</li>
+			  <!-- Profile START -->
+			</ul>
+			<!-- Nav right END -->
+		</div>
+	</nav>
+	<!-- Logo Nav END -->
+</header>
+<!-- =======================
+Header END -->
+
+<main>
+  <!-- Container START -->
+  <div class="container">
+    <div class="row gx-0">
+      <!-- Sidebar START -->
+      <div class="col-lg-4 col-xxl-3" id="chatTabs" role="tablist">
+        <div class="d-flex align-items-center mb-4 d-lg-none">
+          <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="btn btn-primary"><i class="fa-solid fa-sliders-h"></i></span>
+            <span class="h6 mb-0 fw-bold d-lg-none ms-2">Chats</span>
+          </button>
+        </div>
+        <div class="card card-body border-end-0 border-bottom-0 rounded-bottom-0">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class="h5 mb-0">Aktif mesajlar <span class="badge bg-success bg-opacity-10 text-success">{{ istekler.count }}</span></h1>
+            <div class="dropend position-relative">
+              <div class="nav">
+                <a class="icon-md rounded-circle btn btn-sm btn-primary-soft nav-link toast-btn" data-target="chatToast" href="#"> <i class="bi bi-pencil-square"></i> </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <nav class="navbar navbar-light navbar-expand-lg mx-0">
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
+            <div class="offcanvas-header">
+              <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+              <div class="card card-chat-list rounded-end-lg-0 card-body border-end-lg-0 rounded-top-0">
+                <div class="mt-4 h-100">
+                  <div class="chat-tab-list custom-scrollbar">
+                    <ul class="nav flex-column nav-pills nav-pills-soft">
+                      {% for istek in istekler %}
+                      <li class="mt-3 hstack gap-3 align-items-center position-relative">
+                        <div class="avatar status-online">
+                          {% if istek.user.userprofile.profile_picture %}
+                          <img class="avatar-img rounded-circle" src="{{ istek.user.userprofile.profile_picture.url }}" alt="">
+                          {% else %}
+                          <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/0.jpg' %}" alt="">
+                          {% endif %}
+                        </div>
+                        <div class="overflow-hidden">
+                          <a class="h6 mb-0 stretched-link" href="/profile/{{istek.user.username}}">{{ istek.user.username }}</a>
+                          <div class="small text-secondary text-truncate">{{ istek.istek_mesaji }}</div>
+                          <div class="small text-secondary text-truncate">Şehir: {{ istek.country }}</div>
+                          <div class="small text-secondary text-truncate">İlçe: {{ istek.city }}</div>
+                        </div>
+                        <div class="small ms-auto text-nowrap">{{ istek.created_at }}</div>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <!-- Sidebar END -->
+      <!-- Chat conversation START -->
+      <div class="col-lg-8 col-xxl-9">
+        <div class="card card-chat rounded-start-lg-0 border-start-lg-0">
+          <div class="card-body h-100">
+            <div class="fade tab-pane h-100" id="chat-6" role="tabpanel" aria-labelledby="chat-6-tab">
+              <div class="d-sm-flex justify-content-between align-items-center">
+                <div class="d-flex mb-2 mb-sm-0">
+                </div>
+                <div class="d-flex align-items-center">
+                  <a href="#!" class="icon-md rounded-circle btn btn-primary-soft me-2 px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Audio call"><i class="bi bi-telephone-fill"></i></a>
+                  <a href="#!" class="icon-md rounded-circle btn btn-primary-soft me-2 px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Video call"><i class="bi bi-camera-video-fill"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="d-sm-flex align-items-end">
+              <form method="post" action="{% url 'send_message' istek.user_id %}">
+                {% csrf_token %}
+                <textarea class="form-control mb-sm-0 mb-3" name="content" data-autoresize placeholder="Type a message" rows="1"></textarea>
+                <button type="submit" class="btn btn-sm btn-primary ms-2"><i class="fa-solid fa-paper-plane fs-6"></i></button>
+              </form>              
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Chat conversation END -->
+    </div>
+  </div>
+</main>
+
+<!-- **************** MAIN CONTENT END **************** -->
+
+<!-- Chat START -->
+  <!-- Chat toast END -->
+
+
+<!-- Chat END -->
+
+<!-- =======================
+JS libraries, plugins and custom scripts -->
+
+<!-- Bootstrap JS -->
+<script src="{% static 'assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Vendors -->
+<script src="{% static 'assets/vendor/OverlayScrollbars-master/js/OverlayScrollbars.min.js' %}"></script>
+
+<!-- Theme Functions -->
+<script src="{% static 'assets/js/functions.js' %}"></script>
+
+</body>
+
+
+</html>
